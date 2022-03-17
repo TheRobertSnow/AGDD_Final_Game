@@ -11,10 +11,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: 9a870bb426cea8d4a9f5fc36c486efda
+<<<<<<< HEAD
   - enabled: 1
     path: Assets/Scenes/Arnar.unity
     guid: cb6f3a9e4a57a634ea758c9db7b2beb6
   - enabled: 1
+=======
+  - enabled: 0
+>>>>>>> 4a6e74edeb314d738379e83465905b70ecc679d2
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Game - Rubs.unity
+    guid: c58feb307213a284abf7573c9a95c3ac
   m_configObjects: {}
