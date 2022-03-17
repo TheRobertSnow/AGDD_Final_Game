@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Lobby.unity
     guid: 9a870bb426cea8d4a9f5fc36c486efda
   - enabled: 1
+    path: Assets/Scenes/Arnar.unity
+    guid: cb6f3a9e4a57a634ea758c9db7b2beb6
+  - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
