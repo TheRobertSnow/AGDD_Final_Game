@@ -6,7 +6,7 @@ public class Gun : MonoBehaviour {
         Shooting,
         Reloading
     }
-
+    public Camera Camera;
     // How far forward the muzzle is from the centre of the gun
     private float muzzleOffset;
 
@@ -31,6 +31,9 @@ public class Gun : MonoBehaviour {
     // in both the horizontal and vertical axes
     [Range(0, 45)] public float maxRoundVariation;
 
+    public Animator m_Animator;
+    public AudioSource audioSource;
+
     [Header("Text properties")]
     public TextMeshProUGUI ammoText;
 
@@ -40,12 +43,12 @@ public class Gun : MonoBehaviour {
     private float nextShootTime = 0;
 
     void Start() {
-        muzzleOffset = GetComponent<Renderer>().bounds.extents.z;
+        //muzzleOffset = GetComponent<Renderer>().bounds.extents.z;
         remainingAmmunition = ammunition;
     }
 
     void Update() {
-        ammoText.text = remainingAmmunition + "/" + ammunition;
+        ammoText.text = "Ammo:" + remainingAmmunition + "/" + ammunition;
         switch(shootState) {
             case ShootState.Shooting:
                 // If the gun is ready to shoot again...
@@ -68,6 +71,32 @@ public class Gun : MonoBehaviour {
         // Checks that the gun is ready to shoot
         if(shootState == ShootState.Ready) {
             for(int i = 0; i < roundsPerShot; i++) {
+
+                 // Create a ray from the camera going through the middle of your screen
+                Ray ray = Camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
+                RaycastHit hit;
+                // Check whether your are pointing to something so as to adjust the direction
+                Vector3 targetPoint;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    targetPoint = hit.point;
+                }    
+                else
+                {
+                    targetPoint = ray.GetPoint( 1000 );
+                }
+                GameObject spawnedRound = Instantiate(
+                    round, 
+                    transform.position + transform.forward * 1f,
+                    transform.rotation);
+
+                Rigidbody rb = spawnedRound.GetComponent<Rigidbody>();
+
+                rb.velocity = ( targetPoint - transform.position ).normalized * roundSpeed;
+                
+
+            
+                /* 
                 // Instantiates the round at the muzzle position
                 GameObject spawnedRound = Instantiate(
                     round,
@@ -84,12 +113,14 @@ public class Gun : MonoBehaviour {
 
                 Rigidbody rb = spawnedRound.GetComponent<Rigidbody>();
                 rb.velocity = spawnedRound.transform.forward * roundSpeed;
+                */
             }
             remainingAmmunition--;
-            
             if(remainingAmmunition > 0) {
                 nextShootTime = Time.time + (1 / fireRate);
                 shootState = ShootState.Shooting;
+                m_Animator.SetTrigger("Shoot");
+                audioSource.Play();
             } else {
                 Reload();
             }

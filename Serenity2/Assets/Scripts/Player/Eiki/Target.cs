@@ -1,16 +1,18 @@
 using UnityEngine;
 
-public class Target : MonoBehaviour {
-    public float health;
+public class Target : MonoBehaviour 
+{
+    public TargetManager targetManager;
 
-    void Update() {
-        if(health <= 0) {
+    private void Start() 
+    {
+        targetManager = GameObject.Find("TargetManager").GetComponent<TargetManager>();
+    }
+    void OnCollisionEnter(Collision other) {
+        BulletProjectile bullet = other.gameObject.GetComponent<BulletProjectile>();
+        if(bullet != null) {
+            targetManager.GetComponent<TargetManager>().wasHit = true;
             Destroy(gameObject);
         }
-    }
-
-    /// 'Hits' the target for a certain amount of damage
-    public void Hit(float damage) {
-        health -= damage;
     }
 }

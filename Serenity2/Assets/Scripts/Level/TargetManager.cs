@@ -51,7 +51,6 @@ public class TargetManager : MonoBehaviour
             }
         }
     }
-
     private void SetRandomTime()
     {
         spawnTime = Random.Range(minTime, maxTime);
