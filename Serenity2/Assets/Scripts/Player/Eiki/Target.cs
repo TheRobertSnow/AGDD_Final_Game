@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class Target : MonoBehaviour 
@@ -12,7 +13,7 @@ public class Target : MonoBehaviour
         BulletProjectile bullet = other.gameObject.GetComponent<BulletProjectile>();
         if(bullet != null) {
             targetManager.GetComponent<TargetManager>().wasHit = true;
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

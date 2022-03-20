@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class TargetManager : MonoBehaviour
 {
@@ -27,6 +30,13 @@ public class TargetManager : MonoBehaviour
     [Header("Other")]
     [Tooltip("Player has hit last target")]
     public bool wasHit;
+
+    private PhotonView _photonView;
+
+    private void Awake()
+    {
+        _photonView = GetComponent<PhotonView>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +70,7 @@ public class TargetManager : MonoBehaviour
     {
         time = 0;
         Vector3 pos = new Vector3(0, Random.Range(minY, maxY), Random.Range(minZ, maxZ));
-        Instantiate(target, pos, target.transform.rotation);
+        PhotonNetwork.Instantiate("Target", pos, target.transform.rotation);
+        // Instantiate(target, pos, target.transform.rotation);
     }
 }
