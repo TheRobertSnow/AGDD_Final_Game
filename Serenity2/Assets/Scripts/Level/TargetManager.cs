@@ -30,7 +30,6 @@ public class TargetManager : MonoBehaviour
     [Header("Other")]
     [Tooltip("Player has hit last target")]
     public bool wasHit;
-
     private PhotonView _photonView;
 
     private void Awake()
@@ -70,7 +69,6 @@ public class TargetManager : MonoBehaviour
     {
         time = 0;
         Vector3 pos = new Vector3(0, Random.Range(minY, maxY), Random.Range(minZ, maxZ));
-        PhotonNetwork.Instantiate("Target", pos, target.transform.rotation);
-        // Instantiate(target, pos, target.transform.rotation);
+        PhotonNetwork.InstantiateSceneObject("Target", pos, target.transform.rotation);
     }
 }
