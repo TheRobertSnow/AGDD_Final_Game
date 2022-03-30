@@ -6,17 +6,25 @@ using Photon.Pun;
 public class SpawnPlayers : MonoBehaviour
 {
     public GameObject playerPrefab;
-    public float minX;
-    public float maxX;
-    public float minZ;
-    public float maxZ;
-    
+    public Transform[] blueTeamSpawnPoints;
+    public Transform[] redTeamSpawnPoints;
+    int randomNumber;
+    Transform spawnPoint;
     void Start()
     {
-        Vector3 randomPos = new Vector3(Random.Range(minX, maxX), 0, Random.Range(minZ, maxZ));
-        PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
+        int playerTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
+        
+        if (playerTeam == 0)
+        {
+            randomNumber = Random.Range(0, blueTeamSpawnPoints.Length);
+            spawnPoint = blueTeamSpawnPoints[randomNumber];
+        }
+        else if (playerTeam == 1)
+        {
+            randomNumber = Random.Range(0, redTeamSpawnPoints.Length);
+            spawnPoint = redTeamSpawnPoints[randomNumber];
+        }
+        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, Quaternion.identity);
     }
-
-
 }
 
