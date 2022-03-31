@@ -7,6 +7,17 @@ using UnityEngine;
 public class BulletProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     //public Rigidbody rb;
+    private PhotonView _photonView;
+
+    private void Awake()
+    {
+        _photonView = GetComponent<PhotonView>();
+    }
+
+    private void Start()
+    {
+        Invoke(nameof(destroyInSeconds), 5f);
+    }
 
     // 0 blue
     // 1 red
@@ -25,5 +36,13 @@ public class BulletProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
     private void OnDestroy()
     {
         Debug.Log(GetComponent<Rigidbody>().position);
+    }
+
+    void destroyInSeconds()
+    {
+        if (_photonView.IsMine && PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(this.gameObject);
+        }
     }
 }

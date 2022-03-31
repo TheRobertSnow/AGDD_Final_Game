@@ -33,7 +33,7 @@ public class Target : MonoBehaviour
                 _photonView.RPC(nameof(DoDamage), RpcTarget.All, bullet.team == 0 ? "blue" : "red");
                 PhotonNetwork.Destroy(_photonView.gameObject);
                 targetManager.GetComponent<TargetManager>().wasHit = true;
-                Destroy(other.gameObject);
+                PhotonNetwork.Destroy(other.gameObject);
                 
             }
             
