@@ -42,7 +42,7 @@ public class BulletProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         if (_photonView.IsMine && PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            // PhotonNetwork.Destroy(this.gameObject);
         }
     }
 }
