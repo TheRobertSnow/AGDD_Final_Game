@@ -40,9 +40,9 @@ public class BulletProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     void destroyInSeconds()
     {
-        if (_photonView.IsMine && PhotonNetwork.IsMasterClient)
-        {
-            // PhotonNetwork.Destroy(this.gameObject);
-        }
+        // if (_photonView.IsMine && PhotonNetwork.IsMasterClient)
+        // {
+            Destroy(gameObject);
+        // }
     }
 }
