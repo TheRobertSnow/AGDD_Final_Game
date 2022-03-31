@@ -1,12 +1,14 @@
 using System;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using Vector3 = UnityEngine.Vector3;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] public GameObject cameraHolder;
     [SerializeField] public float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
+    [SerializeField] public TextMesh playerName;
 
     private Rigidbody _rb;
     private float _verticalLookRotation;
@@ -14,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _smoothMoveVelocity;
     private Vector3 _moveAmount;
     private PhotonView _view;
+
+    Player player;
 
     private void Awake()
     {
@@ -29,7 +33,9 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(_rb);
+            SetName();
         }
+        playerName.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -85,5 +91,10 @@ public class PlayerController : MonoBehaviour
         
         // Move the character here because we dont have to worry about fps.
         _rb.MovePosition(_rb.position + transform.TransformDirection(_moveAmount) * Time.fixedDeltaTime);
+    }
+
+    private void SetName()
+    {
+        playerName.text = _view.Owner.NickName;
     }
 }

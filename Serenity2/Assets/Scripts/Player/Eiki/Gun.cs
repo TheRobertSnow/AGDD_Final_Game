@@ -66,7 +66,10 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        ammoText.text = "Ammo:" + remainingAmmunition + "/" + ammunition;
+        if (_PV.IsMine)
+        {
+            ammoText.text = "Ammo:" + remainingAmmunition + "/" + ammunition;
+        }
         switch (shootState)
         {
             case ShootState.Shooting:
@@ -117,43 +120,17 @@ public class Gun : MonoBehaviour
                     transform.position + transform.forward * 1f,
                     transform.rotation, data: new object[0].Append(velocity).ToArray());
 
-                // GameObject spawnedRound = Instantiate(
-                //     round,
-                //     transform.position + transform.forward * 1f,
-                //     transform.rotation);
-
                 Rigidbody rb = clone.GetComponent<Rigidbody>();
 
                 rb.velocity = (targetPoint - transform.position).normalized * roundSpeed;
-
-
-                /* 
-                // Instantiates the round at the muzzle position
-                GameObject spawnedRound = Instantiate(
-                    round,
-                    transform.position + transform.forward * muzzleOffset,
-                    transform.rotation
-                );
-
-                // Add a random variation to the round's direction
-                spawnedRound.transform.Rotate(new Vector3(
-                    Random.Range(-1f, 1f) * maxRoundVariation,
-                    Random.Range(-1f, 1f) * maxRoundVariation,
-                    0
-                ));
-
-                Rigidbody rb = spawnedRound.GetComponent<Rigidbody>();
-                rb.velocity = spawnedRound.transform.forward * roundSpeed;
-                */
             }
-
+            m_Animator.SetTrigger("Shoot");
+            audioSource.Play();
             remainingAmmunition--;
             if (remainingAmmunition > 0)
             {
                 nextShootTime = Time.time + (1 / fireRate);
                 shootState = ShootState.Shooting;
-                m_Animator.SetTrigger("Shoot");
-                audioSource.Play();
             }
             else
             {
