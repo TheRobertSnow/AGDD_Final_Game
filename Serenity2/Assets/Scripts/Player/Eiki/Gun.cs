@@ -115,10 +115,13 @@ public class Gun : MonoBehaviour
                 }
                 
                 Vector3 velocity = (targetPoint - transform.position).normalized * roundSpeed;
+                object[] data = new object[2];
+                data[0] = velocity;
+                data[1] = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
                 GameObject clone = PhotonNetwork.Instantiate(
                     "BulletProjectile",
                     transform.position + transform.forward * 1f,
-                    transform.rotation, data: new object[0].Append(velocity).ToArray());
+                    transform.rotation, data: data);
 
                 Rigidbody rb = clone.GetComponent<Rigidbody>();
 
