@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/Game-Eiki.unity
+    guid: 31112f0bf410c5f4987799006f2aa491
   m_configObjects: {}
