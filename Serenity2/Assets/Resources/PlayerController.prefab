@@ -759,8 +759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c89b705cdc0454b95238729f1f0589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blueTeamSlider: {fileID: 0}
-  redTeamSlider: {fileID: 0}
   maxHealth: 100
 --- !u!1 &4633838509375955312
 GameObject:

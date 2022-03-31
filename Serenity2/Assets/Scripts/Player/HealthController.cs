@@ -1,19 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
 {
-    public Slider blueTeamSlider;
-    public Slider redTeamSlider;
+    private Slider blueTeamSlider;
+    private Slider redTeamSlider;
     public int maxHealth = 100;
     private int blueTeamHealth;
     private int redTeamHealth;
 
+    private PhotonView _photonView;
+
     private void Awake()
     {
+        _photonView = GetComponent<PhotonView>();
+        blueTeamSlider = GameObject.Find("HealthBarBlue").GetComponent<Slider>();
+        redTeamSlider = GameObject.Find("HealthBarRed").GetComponent<Slider>();
         blueTeamHealth = maxHealth;
         redTeamHealth = maxHealth;
         Debug.Log(blueTeamSlider);

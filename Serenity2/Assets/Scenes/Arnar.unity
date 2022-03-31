@@ -655,6 +655,7 @@ GameObject:
   m_Component:
   - component: {fileID: 362961158}
   - component: {fileID: 362961157}
+  - component: {fileID: 362961159}
   m_Layer: 0
   m_Name: HealthController
   m_TagString: Untagged
@@ -674,8 +675,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c89b705cdc0454b95238729f1f0589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blueTeamSlider: {fileID: 237161518}
-  redTeamSlider: {fileID: 727083704}
   maxHealth: 100
 --- !u!4 &362961158
 Transform:
@@ -687,10 +686,33 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 777522126}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &362961159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362961156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &377089158
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,7 +1140,7 @@ RectTransform:
   m_Children:
   - {fileID: 237161517}
   - {fileID: 727083703}
-  m_Father: {fileID: 1089441851}
+  m_Father: {fileID: 362961158}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1378,8 +1400,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 777522126}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

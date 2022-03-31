@@ -8,15 +8,22 @@ public class BulletProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     //public Rigidbody rb;
 
+    // 0 blue
+    // 1 red
     public int team;
     void OnCollisionEnter(Collision other) {
 
-        Destroy(gameObject);
+        // Destroy(gameObject);
     }
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] data = info.photonView.InstantiationData;
         GetComponent<Rigidbody>().velocity = (Vector3) data[0];
         team = (int)data[1];
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log(GetComponent<Rigidbody>().position);
     }
 }
