@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Realtime;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
