@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Arnar.unity
     guid: cb6f3a9e4a57a634ea758c9db7b2beb6
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 517c8d618f553b74e866aa41f614ecb4
   m_configObjects: {}

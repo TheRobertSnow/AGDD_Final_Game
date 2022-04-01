@@ -45,11 +45,11 @@ public class Target : MonoBehaviour
     {
         if (team == "red")
         {
-            healthController.SetHealthBlueTeam(10);
+            healthController.damageBlueTeam();
         }
         else
         {
-            healthController.SetHealthRedTeam(10);
+            healthController.damageRedTeam();
         }
     }
 }
