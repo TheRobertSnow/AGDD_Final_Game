@@ -723,6 +723,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 6543518121262361817, guid: de32d42c703635e44b22859f9feb22f5, type: 3}
   blueTeamSpawnPoints: []
   redTeamSpawnPoints: []
+  noTeamSpawnPoint: {fileID: 0}
 --- !u!1 &1365773412
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,6 +1070,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2825059199912221019, guid: 02c7602039a12e344919e5803a3286be, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5231348427775973127, guid: 02c7602039a12e344919e5803a3286be, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5791761252599130802, guid: 02c7602039a12e344919e5803a3286be, type: 3}
       propertyPath: m_Name
       value: smokeCan
@@ -1126,6 +1135,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2927343443911867179, guid: 647f740486f68764fa95b5da190c6cd8, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6058185321747033356, guid: 647f740486f68764fa95b5da190c6cd8, type: 3}
       propertyPath: m_Name
       value: SmokeEffect
