@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _moveAmount;
     private PhotonView _view;
 
+    public Animator modelAnimator;
     Player player;
 
     private void Awake()
@@ -67,6 +68,12 @@ public class PlayerController : MonoBehaviour
         _moveAmount = Vector3.SmoothDamp(
             _moveAmount,
             moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed), ref _smoothMoveVelocity, smoothTime);
+
+        float velocityZ = Vector3.Dot(moveDir.normalized, transform.forward);
+        float velocityX = Vector3.Dot(moveDir.normalized, transform.right);
+
+        modelAnimator.SetFloat("VelocityZ", velocityZ/* , 0.1f, Time.deltaTime */);
+        modelAnimator.SetFloat("VelocityX", velocityX/* , 0.1f, Time.deltaTime */);
     }
 
     private void Jump()

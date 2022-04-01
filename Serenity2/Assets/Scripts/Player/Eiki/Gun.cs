@@ -15,7 +15,7 @@ public class Gun : MonoBehaviour
         Reloading
     }
 
-    public Camera Camera;
+    public Camera cam;
 
     // How far forward the muzzle is from the centre of the gun
     private float muzzleOffset;
@@ -101,7 +101,7 @@ public class Gun : MonoBehaviour
             for (int i = 0; i < roundsPerShot; i++)
             {
                 // Create a ray from the camera going through the middle of your screen
-                Ray ray = Camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
+                Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
                 RaycastHit hit;
                 // Check whether your are pointing to something so as to adjust the direction
                 Vector3 targetPoint;
