@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class SmokeController : MonoBehaviour
 {
@@ -31,6 +32,6 @@ public class SmokeController : MonoBehaviour
 
     public void RunSmokeAnimation()
     {
-        GameObject smokeEff = Instantiate(smokeEffect, transform.position, Quaternion.identity);
+        GameObject smokeEff = PhotonNetwork.Instantiate("SmokeEffect", transform.position, Quaternion.identity);
     }
 }

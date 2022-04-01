@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
             if (numberOfSmokes > 0)
             {
                 Vector3 spawn = GameObject.Find("SmokeSpawn").transform.position;
-                Instantiate(smokePrefab, spawn, Quaternion.identity);
+                PhotonNetwork.Instantiate("smokeCan", spawn, Quaternion.identity);
                 --numberOfSmokes;
             }
         }
