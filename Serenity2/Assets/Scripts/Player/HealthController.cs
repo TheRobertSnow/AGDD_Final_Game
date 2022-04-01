@@ -18,11 +18,10 @@ public class HealthController : MonoBehaviour
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
-        blueTeamSlider = GameObject.Find("HealthBarBlue").GetComponent<Slider>();
-        redTeamSlider = GameObject.Find("HealthBarRed").GetComponent<Slider>();
+        blueTeamSlider = GameObject.Find("SliderBlue").GetComponent<Slider>();
+        redTeamSlider = GameObject.Find("SliderRed").GetComponent<Slider>();
         blueTeamHealth = maxHealth;
         redTeamHealth = maxHealth;
-        Debug.Log(blueTeamSlider);
         blueTeamSlider.value = maxHealth;
         redTeamSlider.value = maxHealth;
     }
