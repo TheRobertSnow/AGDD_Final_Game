@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject cameraHolder;
     [SerializeField] public float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
     [SerializeField] public TextMesh playerName;
+    [SerializeField] public GameObject smokePrefab;
+    [SerializeField] public int numberOfSmokes;
 
     private Rigidbody _rb;
     private float _verticalLookRotation;
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
         Look();
         Move();
         Jump();
+        throwSmoke();
     }
 
     private void Look()
@@ -103,5 +106,18 @@ public class PlayerController : MonoBehaviour
     private void SetName()
     {
         playerName.text = _view.Owner.NickName;
+    }
+
+    public void throwSmoke()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (numberOfSmokes > 0)
+            {
+                Vector3 spawn = GameObject.Find("SmokeSpawn").transform.position;
+                Instantiate(smokePrefab, spawn, Quaternion.identity);
+                --numberOfSmokes;
+            }
+        }
     }
 }
