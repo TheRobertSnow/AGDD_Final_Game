@@ -96,7 +96,7 @@ public class Gun : MonoBehaviour
     public void Shoot()
     {
         // Checks that the gun is ready to shoot
-        if (shootState == ShootState.Ready)
+        if (shootState == ShootState.Ready && PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team"))
         {
             for (int i = 0; i < roundsPerShot; i++)
             {
