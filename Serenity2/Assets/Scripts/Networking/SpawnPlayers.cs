@@ -13,17 +13,18 @@ public class SpawnPlayers : MonoBehaviour
     Transform spawnPoint;
     void Start()
     {
-        int playerTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
-        
-        if (playerTeam == 0)
-        {
-            randomNumber = Random.Range(0, blueTeamSpawnPoints.Length);
-            spawnPoint = blueTeamSpawnPoints[randomNumber];
-        }
-        else if (playerTeam == 1)
-        {
-            randomNumber = Random.Range(0, redTeamSpawnPoints.Length);
-            spawnPoint = redTeamSpawnPoints[randomNumber];
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team")) {
+            int playerTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
+            if (playerTeam == 0)
+            {
+                randomNumber = Random.Range(0, blueTeamSpawnPoints.Length);
+                spawnPoint = blueTeamSpawnPoints[randomNumber];
+            }
+            else if (playerTeam == 1)
+            {
+                randomNumber = Random.Range(0, redTeamSpawnPoints.Length);
+                spawnPoint = redTeamSpawnPoints[randomNumber];
+            }
         }
         else {
             spawnPoint = noTeamSpawnPoint;

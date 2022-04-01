@@ -66,8 +66,7 @@ public class PlayerItem : MonoBehaviourPunCallbacks
         }
         else
         {
-            playerProperties["team"] = 2;
+            playerProperties["team"] = 0;
         }
-        PhotonNetwork.SetPlayerCustomProperties(playerProperties);
     }
 }
