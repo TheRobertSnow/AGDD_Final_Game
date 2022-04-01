@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
 
     public void throwSmoke()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G) && _view.IsMine)
         {
             if (numberOfSmokes > 0)
             {
