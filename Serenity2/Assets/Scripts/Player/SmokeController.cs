@@ -11,6 +11,12 @@ public class SmokeController : MonoBehaviour
     private Camera _camera;
 
     // Start is called before the first frame update
+    private PhotonView _view;
+
+    private void Awake()
+    {
+        _view = GetComponent<PhotonView>();
+    }
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
@@ -32,6 +38,9 @@ public class SmokeController : MonoBehaviour
 
     public void RunSmokeAnimation()
     {
-        GameObject smokeEff = PhotonNetwork.Instantiate("SmokeEffect", transform.position, Quaternion.identity);
+        if(_view.IsMine)
+        {
+            GameObject smokeEff = PhotonNetwork.Instantiate("SmokeEffect", transform.position, Quaternion.identity);
+        }
     }
 }
