@@ -919,8 +919,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraHolder: {fileID: 656617058460944624}
   mouseSensitivity: 3
-  sprintSpeed: 6
-  walkSpeed: 3
+  sprintSpeed: 9
+  walkSpeed: 6
   jumpForce: 300
   smoothTime: 0.15
   playerName: {fileID: 8444782542020146797}
