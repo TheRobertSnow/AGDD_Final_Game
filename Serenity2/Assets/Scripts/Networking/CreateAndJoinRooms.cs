@@ -73,6 +73,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             }
             RoomItem newRoom = Instantiate(roomItemPrefab, contentObject);
             newRoom.SetRoomName(room.Name);
+            newRoom.SetPlayerCount(room.PlayerCount.ToString() + "/" + room.MaxPlayers.ToString());
+            newRoom.SetRoomStatus("waiting");
             roomItemsList.Add(newRoom);
         }
     }
