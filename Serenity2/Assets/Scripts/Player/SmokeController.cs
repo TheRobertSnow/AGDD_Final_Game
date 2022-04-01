@@ -9,6 +9,7 @@ public class SmokeController : MonoBehaviour
     public Vector3 velocity;
     private Rigidbody _rigidBody;
     private Camera _camera;
+    private GameObject _smokeEff;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,12 @@ public class SmokeController : MonoBehaviour
 
     public void RunSmokeAnimation()
     {
-        GameObject smokeEff = PhotonNetwork.Instantiate("SmokeEffect", transform.position, Quaternion.identity);
+        _smokeEff = PhotonNetwork.Instantiate("SmokeEffect", transform.position, Quaternion.identity);
+        Invoke("RemoveSmokeEffect", 10);
+    }
+
+    public void RemoveSmokeEffect()
+    {
+        PhotonNetwork.Destroy(_smokeEff);
     }
 }
