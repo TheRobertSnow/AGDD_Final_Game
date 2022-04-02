@@ -42,6 +42,8 @@ MonoBehaviour:
   - OnCollisionEnter
   - RPC_ForceMasterClientReplaceTarget
   - DoDamage
+  - PlayFAnimation
+  - StopFAnimation
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
