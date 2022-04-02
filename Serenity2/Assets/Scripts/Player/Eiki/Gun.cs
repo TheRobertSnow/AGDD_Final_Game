@@ -152,4 +152,12 @@ public class Gun : MonoBehaviour
             shootState = ShootState.Reloading;
         }
     }
+
+    public void ReloadInstantly()
+    {
+        // Checks that the gun is ready to be reloaded
+        remainingAmmunition = ammunition;
+        shootState = ShootState.Ready;
+        nextShootTime = Time.time;
+    }
 }
