@@ -18,11 +18,15 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     public string[] teams;
 
     Player player;
+    int blueTeamCount = 0;
+    int redTeamCount = 0;
 
     public void setPlayerInfo(Player _player)
     {
         playerName.text = _player.NickName;
         player = _player;
+        player.CustomProperties["team"] = 0;
+        player.CustomProperties["spawnPoint"] = 0;
         UpdatePlayerItem(player);
     }
 
@@ -67,6 +71,27 @@ public class PlayerItem : MonoBehaviourPunCallbacks
         else
         {
             playerProperties["team"] = 0;
+        }
+        if(player.CustomProperties.ContainsKey("spawnPoint"))
+        {
+            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                var team = (int)PhotonNetwork.PlayerList[i].CustomProperties["team"];
+                if (team == 0) blueTeamCount++;
+                else redTeamCount++;
+            }
+            if ((int)player.CustomProperties["team"] == 0)
+            {
+                playerProperties["spawnPoint"] = blueTeamCount;
+                Debug.Log("Blue team spawn point:" + blueTeamCount);
+            }
+            else
+            {
+                playerProperties["spawnPoint"] = redTeamCount;
+                Debug.Log("Red team spawn point:" + redTeamCount);
+            }
+            blueTeamCount = 0;
+            redTeamCount = 0;
         }
     }
 }
