@@ -90,6 +90,26 @@ public class Gun : MonoBehaviour
 
                 break;
         }
+        if(Input.GetKey(KeyCode.F) && _PV.IsMine)
+        {
+            _PV.RPC("PlayFAnimation", RpcTarget.All);
+        }
+        else if (_PV.IsMine)
+        {
+            _PV.RPC("StopFAnimation", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    void PlayFAnimation()
+    {
+        m_Animator.SetBool("F_Pressed", true);
+    }
+
+    [PunRPC]
+    void StopFAnimation()
+    {
+        m_Animator.SetBool("F_Pressed", false);
     }
 
     /// Attempts to fire the gun
