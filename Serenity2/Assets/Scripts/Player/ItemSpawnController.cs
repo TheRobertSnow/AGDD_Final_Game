@@ -79,9 +79,10 @@ public class ItemSpawnController : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void EnablePickup()
+    private void EnablePickup(PickupType pickupType)
     {
         _canPickUp = true;
+        _objectType = pickupType;
     }
 
     [PunRPC]
@@ -112,14 +113,12 @@ public class ItemSpawnController : MonoBehaviourPun
     private void SpawnSmoke()
     {
         currentObject = PhotonNetwork.Instantiate("smokeCanSpawnItem", spawn.transform.position, Quaternion.Euler(-80, 0, 0));
-        _objectType = PickupType.SMOKE;
-        _PV.RPC(nameof(EnablePickup), RpcTarget.All);
+        _PV.RPC(nameof(EnablePickup), RpcTarget.All, PickupType.SMOKE);
     }
 
     private void SpawnAmmo()
     {
         currentObject = PhotonNetwork.Instantiate("AmmoBox", spawn.transform.position, Quaternion.Euler(-80, 0, 0));
-        _objectType = PickupType.AMMO;
-        _PV.RPC(nameof(EnablePickup), RpcTarget.All);
+        _PV.RPC(nameof(EnablePickup), RpcTarget.All, PickupType.AMMO);
     }
 }
