@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public TextMesh playerName;
     [SerializeField] public GameObject smokePrefab;
     [SerializeField] public int numberOfSmokes;
+    [Header("Smoke Spawn Points")]
+    [SerializeField] public GameObject[] blueSpawnPoints;
+    [SerializeField] public GameObject[] redSpawnPoints;
 
     private Rigidbody _rb;
     private float _verticalLookRotation;
@@ -18,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _smoothMoveVelocity;
     private Vector3 _moveAmount;
     private PhotonView _view;
+    private int _team; // 0 = blue, 1 = red
 
     public Animator modelAnimator;
     Player player;
@@ -39,6 +43,7 @@ public class PlayerController : MonoBehaviour
             SetName();
         }
         playerName.gameObject.SetActive(false);
+        _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
     }
 
     private void Update()

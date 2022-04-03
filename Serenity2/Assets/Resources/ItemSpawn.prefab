@@ -142,7 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawn: {fileID: 7175607393674459975}
-  smokeMesh: {fileID: 4390609997866590713, guid: 0e1e47cdce7c4cc4b9488ec5d0dcaef5, type: 3}
   currentObject: {fileID: 0}
 --- !u!114 &-3826861704795052868
 MonoBehaviour:

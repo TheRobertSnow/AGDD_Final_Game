@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4390609997866590713
+--- !u!1 &4878311406490142123
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4390609997866590709}
-  - component: {fileID: 4390609997866590708}
-  - component: {fileID: 4390609997866590711}
-  - component: {fileID: 3766613525823188462}
-  - component: {fileID: -523144970226079950}
-  - component: {fileID: -2900783052592290539}
+  - component: {fileID: 5258215125653167889}
+  - component: {fileID: 9175861423957053620}
+  - component: {fileID: 6391665672312284286}
+  - component: {fileID: 6816698831200918223}
   m_Layer: 0
-  m_Name: smokeCanSpawnItem
+  m_Name: AmmoBox
   m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4390609997866590709
+--- !u!4 &5258215125653167889
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4390609997866590713}
+  m_GameObject: {fileID: 4878311406490142123}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 12.056205, y: 12.056205, z: 21.064722}
+  m_LocalPosition: {x: 10.492, y: 0.449, z: 1.901}
+  m_LocalScale: {x: 11.77704, y: 21.78912, z: 17.45129}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!33 &4390609997866590708
+--- !u!33 &9175861423957053620
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4390609997866590713}
-  m_Mesh: {fileID: 2534964839176971238, guid: 1af15939f3a34984f946e9a38c7a48a4, type: 3}
---- !u!23 &4390609997866590711
+  m_GameObject: {fileID: 4878311406490142123}
+  m_Mesh: {fileID: -5495902117074765545, guid: c460061ea1769324f90c8cef1ba6992d, type: 3}
+--- !u!23 &6391665672312284286
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4390609997866590713}
+  m_GameObject: {fileID: 4878311406490142123}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -62,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0457ae1595fc6144bbdf12adc876511e, type: 2}
+  - {fileID: 2100000, guid: ec4ac4af7eedd6b4a876e7ce91365275, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,13 +82,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3766613525823188462
+--- !u!114 &6816698831200918223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4390609997866590713}
+  m_GameObject: {fileID: 4878311406490142123}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -106,29 +104,3 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-523144970226079950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4390609997866590713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e2e05373ca33b243880415779497b8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroySelf: 0
---- !u!135 &-2900783052592290539
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4390609997866590713}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.05
-  m_Center: {x: 0, y: 0, z: 0}
