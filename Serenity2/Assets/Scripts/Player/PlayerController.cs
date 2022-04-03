@@ -7,7 +7,7 @@ using Vector3 = UnityEngine.Vector3;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] public GameObject cameraHolder;
-    [SerializeField] public float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
+    [SerializeField] public float sprintSpeed, walkSpeed, jumpForce, smoothTime;
     [SerializeField] public TextMesh playerName;
     [SerializeField] public GameObject smokePrefab;
     [SerializeField] public int numberOfSmokes;
@@ -56,9 +56,9 @@ public class PlayerController : MonoBehaviour
 
     private void Look()
     {
-        transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
+        transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * PlayerPrefs.GetFloat("sensitivity"));
 
-        _verticalLookRotation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        _verticalLookRotation += Input.GetAxisRaw("Mouse Y") * PlayerPrefs.GetFloat("sensitivity");
         _verticalLookRotation = Mathf.Clamp(_verticalLookRotation, -90f, 90f);
 
         cameraHolder.transform.localEulerAngles = Vector3.left * _verticalLookRotation;
