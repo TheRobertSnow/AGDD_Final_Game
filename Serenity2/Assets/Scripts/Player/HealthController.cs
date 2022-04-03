@@ -67,7 +67,6 @@ public class HealthController : MonoBehaviour
     {
         if (_myTeamHitTarget(teamHit))
         {
-            Debug.Log("play ping");
             pingAudio.Play();
         }
         else
@@ -79,8 +78,6 @@ public class HealthController : MonoBehaviour
     private bool _myTeamHitTarget(string teamHit)
     {
         int myTeam = (int) PhotonNetwork.LocalPlayer.CustomProperties["team"];
-        Debug.Log(teamHit + " " + myTeam);
-        // if blue was hit and i am blue
         if (teamHit == "blue" && myTeam == 1)
         {
             return true;
