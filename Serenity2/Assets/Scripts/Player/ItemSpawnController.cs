@@ -55,8 +55,19 @@ public class ItemSpawnController : MonoBehaviourPun
     {
         if (collision.collider.CompareTag("Player"))
         {
+            // think this will update ammo for all but we will see
+            var player = collision.gameObject.GetComponent<PlayerController>();
+            if (_objectType == PickupType.AMMO)
+            {
+                var gun = player.GetComponentInChildren<Gun>();
+                gun.IncrementAmmo();
+            }
+            else
+            {
+                player.IncrementSmokeCount();
+            }
             // todo: check if ammo/grenade and add ammo/grenade to the player
-            // var player = collision.gameObject.GetComponent<PlayerController>(); smthn like this?
+            
             int rand = Random.Range(0, 2);
             _PV.RPC(nameof(DestroyCurrentObject), RpcTarget.MasterClient, rand.ToString());
         }
@@ -90,10 +101,12 @@ public class ItemSpawnController : MonoBehaviourPun
     private void SpawnSmoke()
     {
         currentObject = PhotonNetwork.Instantiate("smokeCanSpawnItem", spawn.transform.position, Quaternion.Euler(-80, 0, 0));
+        _objectType = PickupType.SMOKE;
     }
 
     private void SpawnAmmo()
     {
         currentObject = PhotonNetwork.Instantiate("AmmoBox", spawn.transform.position, Quaternion.Euler(-80, 0, 0));
+        _objectType = PickupType.AMMO;
     }
 }

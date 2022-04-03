@@ -173,4 +173,5 @@ public class PlayerController : MonoBehaviour
     {
         ++numberOfSmokes;
     }
+
 }
