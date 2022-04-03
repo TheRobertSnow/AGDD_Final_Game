@@ -53,18 +53,12 @@ public class ItemSpawnController : MonoBehaviourPun
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == "Player")
+        if (collision.collider.CompareTag("Player"))
         {
-            Debug.Log("Something collided");
-            if (_PV.IsMine)
-            {
-                //if (!PhotonNetwork.IsMasterClient)
-                //{
-                //    _PV.RequestOwnership();
-                //}
-                int rand = Random.Range(0, 2);
-                _PV.RPC(nameof(DestroyCurrentObject), RpcTarget.MasterClient, rand.ToString());
-            }
+            // todo: check if ammo/grenade and add ammo/grenade to the player
+            // var player = collision.gameObject.GetComponent<PlayerController>(); smthn like this?
+            int rand = Random.Range(0, 2);
+            _PV.RPC(nameof(DestroyCurrentObject), RpcTarget.MasterClient, rand.ToString());
         }
     }
 

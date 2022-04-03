@@ -133,5 +133,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetManager: {fileID: 0}
-  pingAudio: {fileID: 0}
-  damageAudio: {fileID: 0}
