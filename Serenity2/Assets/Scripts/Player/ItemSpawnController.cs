@@ -53,9 +53,8 @@ public class ItemSpawnController : MonoBehaviourPun
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Player"))
+        if (collision.collider.CompareTag("Player") && _canPickUp)
         {
-            // think this will update ammo for all but we will see
             var player = collision.gameObject.GetComponent<PlayerController>();
             if (_objectType == PickupType.AMMO)
             {
@@ -66,11 +65,23 @@ public class ItemSpawnController : MonoBehaviourPun
             {
                 player.IncrementSmokeCount();
             }
-            // todo: check if ammo/grenade and add ammo/grenade to the player
             
             int rand = Random.Range(0, 2);
+            _PV.RPC(nameof(DisablePickup), RpcTarget.All);
             _PV.RPC(nameof(DestroyCurrentObject), RpcTarget.MasterClient, rand.ToString());
         }
+    }
+
+    [PunRPC]
+    private void DisablePickup()
+    {
+        _canPickUp = false;
+    }
+
+    [PunRPC]
+    private void EnablePickup()
+    {
+        _canPickUp = true;
     }
 
     [PunRPC]
@@ -102,11 +113,13 @@ public class ItemSpawnController : MonoBehaviourPun
     {
         currentObject = PhotonNetwork.Instantiate("smokeCanSpawnItem", spawn.transform.position, Quaternion.Euler(-80, 0, 0));
         _objectType = PickupType.SMOKE;
+        _PV.RPC(nameof(EnablePickup), RpcTarget.All);
     }
 
     private void SpawnAmmo()
     {
         currentObject = PhotonNetwork.Instantiate("AmmoBox", spawn.transform.position, Quaternion.Euler(-80, 0, 0));
         _objectType = PickupType.AMMO;
+        _PV.RPC(nameof(EnablePickup), RpcTarget.All);
     }
 }
