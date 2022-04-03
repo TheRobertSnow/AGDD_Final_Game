@@ -52,4 +52,6 @@ public class Target : MonoBehaviour
             healthController.damageRedTeam();
         }
     }
+
+
 }

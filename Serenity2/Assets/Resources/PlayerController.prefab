@@ -925,6 +925,9 @@ MonoBehaviour:
   playerName: {fileID: 8444782542020146797}
   smokePrefab: {fileID: 5791761252599130802, guid: 02c7602039a12e344919e5803a3286be, type: 3}
   numberOfSmokes: 2
+  energy: 100
+  blueSpawnPoints: []
+  redSpawnPoints: []
   modelAnimator: {fileID: 4482289828225869349}
 --- !u!114 &4835689242978647030
 MonoBehaviour:

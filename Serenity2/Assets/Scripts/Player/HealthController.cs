@@ -17,6 +17,9 @@ public class HealthController : MonoBehaviour
     private PhotonView _photonView;
     RoundController roundController;
 
+    public AudioSource pingAudio;
+    public AudioSource damageAudio;
+
     private void Awake()
     {
         PlayerPrefs.SetInt("roundWinner", -1);
@@ -30,6 +33,7 @@ public class HealthController : MonoBehaviour
     {
         blueTeamHealth = blueTeamHealth - (maxHealth/hitsToWinRound);
         blueTeamSlider.value = blueTeamHealth;
+        playSound("blue");
         if (blueTeamHealth == 0) {
             PlayerPrefs.SetInt("roundWinner", 1);
             roundController.InitNewRound();
@@ -42,6 +46,7 @@ public class HealthController : MonoBehaviour
     {
         redTeamHealth = redTeamHealth - (maxHealth/hitsToWinRound);
         redTeamSlider.value = redTeamHealth;
+        playSound("red");
         if (redTeamHealth == 0) {
             PlayerPrefs.SetInt("roundWinner", 0);
             roundController.InitNewRound();
@@ -55,5 +60,33 @@ public class HealthController : MonoBehaviour
         redTeamHealth = maxHealth;
         blueTeamSlider.value = maxHealth;
         redTeamSlider.value = maxHealth;
+    }
+
+
+    private void playSound(string teamHit)
+    {
+        if (_myTeamHitTarget(teamHit))
+        {
+            pingAudio.Play();
+        }
+        else
+        {
+            damageAudio.Play();
+        }
+    }
+    
+    private bool _myTeamHitTarget(string teamHit)
+    {
+        int myTeam = (int) PhotonNetwork.LocalPlayer.CustomProperties["team"];
+        if (teamHit == "blue" && myTeam == 1)
+        {
+            return true;
+        } 
+        if (teamHit == "red" && myTeam == 0)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

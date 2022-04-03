@@ -20,19 +20,28 @@ public class SmokeCanSpawnItem : MonoBehaviourPun, IPunInstantiateMagicCallback
         float dt = Time.deltaTime;
         transform.Rotate(0, dt * 90, 0, Space.World);
     }
-    private void OnTriggerEnter(Collider collider)
+    //private void OnTriggerEnter(Collider collider)
+    //{
+    //    if (collider.tag == "Player")
+    //    {
+    //        collider.GetComponent<PlayerController>().IncrementSmokeCount();
+    //        _PV.RPC("RemoveObj", RpcTarget.All);
+    //        //RemoveObj();
+    //    }
+    //}
+
+    public void KillMySelf()
     {
-        if (collider.tag == "Player")
-        {
-            collider.GetComponent<PlayerController>().IncrementSmokeCount();
-            _PV.RPC("RemoveObj", RpcTarget.All);
-        }
+        _PV.RPC(nameof(RemoveObj), RpcTarget.All);
     }
 
     [PunRPC]
     private void RemoveObj()
     {
-        //this.GetComponentInParent<ItemSpawnController>().SetSpawnState();
-        PhotonNetwork.Destroy(this.gameObject);
+
+        if (_PV.IsMine)
+        {
+            PhotonNetwork.Destroy(this.gameObject);
+        }
     }
 }
