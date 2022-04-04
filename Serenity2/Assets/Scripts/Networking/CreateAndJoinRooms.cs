@@ -23,9 +23,13 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public List<PlayerItem> playerItemsList = new List<PlayerItem>();
     public PlayerItem playerItemPrefab;
-    public Transform playerItemParent;
+    public PlayerItem otherPlayerItemPrefab;
+    public Transform blueTeamList;
+    public Transform redTeamList;
 
     public GameObject playButton;
+
+    
 
     private void Start() 
     {
@@ -36,7 +40,12 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         if (createInput.text.Length > 0)
         {
-            PhotonNetwork.CreateRoom(createInput.text, new RoomOptions(){ MaxPlayers = 10, BroadcastPropsChangeToAll = true});
+            ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
+            {
+                { "blueTeamCount", 0 },
+                { "redTeamCount", 0 },
+            };
+            PhotonNetwork.CreateRoom(createInput.text, new RoomOptions(){ MaxPlayers = 10, BroadcastPropsChangeToAll = true, CustomRoomProperties = roomProperties });
         }
     }
 
@@ -74,7 +83,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             RoomItem newRoom = Instantiate(roomItemPrefab, contentObject);
             newRoom.SetRoomName(room.Name);
             newRoom.SetPlayerCount(room.PlayerCount.ToString() + "/" + room.MaxPlayers.ToString());
-            newRoom.SetRoomStatus("waiting");
             roomItemsList.Add(newRoom);
         }
     }
@@ -100,6 +108,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
 
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        UpdatePlayerList();
+    }
+
     void UpdatePlayerList()
     {
         foreach (PlayerItem item in playerItemsList)
@@ -115,9 +128,36 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
-            PlayerItem newPlayerItem = Instantiate(playerItemPrefab, playerItemParent);
-            newPlayerItem.setPlayerInfo(player.Value);
-            playerItemsList.Add(newPlayerItem);
+            if(player.Value.NickName == PhotonNetwork.NickName)
+            {
+                if (player.Value.CustomProperties.ContainsKey("team"))
+                {
+                    PlayerItem newPlayerItem = Instantiate(playerItemPrefab, (int)player.Value.CustomProperties["team"] == 0 ? blueTeamList : redTeamList);
+                    newPlayerItem.SetPlayerInfo(player.Value);
+                    playerItemsList.Add(newPlayerItem);
+                }
+                else
+                {
+                    PlayerItem newPlayerItem = Instantiate(playerItemPrefab, blueTeamList);
+                    newPlayerItem.SetPlayerInfo(player.Value);
+                    playerItemsList.Add(newPlayerItem);
+                }
+            }
+            else
+            {
+                if (player.Value.CustomProperties.ContainsKey("team"))
+                {
+                    PlayerItem newPlayerItem = Instantiate(otherPlayerItemPrefab, (int)player.Value.CustomProperties["team"] == 0 ? blueTeamList : redTeamList);
+                    newPlayerItem.SetPlayerInfo(player.Value);
+                    playerItemsList.Add(newPlayerItem);
+                }
+                else
+                {
+                    PlayerItem newPlayerItem = Instantiate(otherPlayerItemPrefab, blueTeamList);
+                    newPlayerItem.SetPlayerInfo(player.Value);
+                    playerItemsList.Add(newPlayerItem);
+                }
+            }
         }
     }
 
@@ -146,6 +186,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void OnClickPlayButton()
     {
-        PhotonNetwork.LoadLevel("PlayfieldTestDinkus");
+        PhotonNetwork.LoadLevel("PlayfieldTestEikus");
     }
 }
