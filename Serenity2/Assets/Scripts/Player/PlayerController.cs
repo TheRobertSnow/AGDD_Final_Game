@@ -14,9 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject smokePrefab;
     [SerializeField] public int numberOfSmokes;
     [SerializeField] public float energy = 100f;
-    [Header("Smoke Spawn Points")]
-    [SerializeField] public GameObject[] blueSpawnPoints;
-    [SerializeField] public GameObject[] redSpawnPoints;
 
     private Rigidbody _rb;
     private float _verticalLookRotation;
@@ -24,13 +21,15 @@ public class PlayerController : MonoBehaviour
     private Vector3 _smoothMoveVelocity;
     private Vector3 _moveAmount;
     private PhotonView _view;
-    private int _team; // 0 = blue, 1 = red
+    private int _team; // 0 = blue, 1 = red, 2 = spectator
 
     private Slider _energySlider;
     private Image _energySliderImage;
 
     public Animator modelAnimator;
     Player player;
+
+    private bool _playerBlownUp = false;
 
     private TMP_Text _grenadeText;
 
@@ -69,6 +68,14 @@ public class PlayerController : MonoBehaviour
         Move();
         Jump();
         throwSmoke();
+        //if (!_playerBlownUp)
+        //{
+        //    CheckBounds();
+        //}
+        //else
+        //{
+        //    _rb.velocity = Vector3.zero;
+        //}
     }
 
     private void Look()
@@ -88,29 +95,32 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateEnergy()
     {
-        if (!isSprinting())
+        if (_team != 2)
         {
-            if (energy < 5f)
+            if (!isSprinting())
             {
-                // energy is restore slower if almost empty to stop spam
-                energy = Math.Min(100f, energy + Time.fixedDeltaTime);
+                if (energy < 5f)
+                {
+                    // energy is restore slower if almost empty to stop spam
+                    energy = Math.Min(100f, energy + Time.fixedDeltaTime);
+                }
+                else
+                {
+                    energy = Math.Min(100f, energy + Time.fixedDeltaTime * 5f);
+                }
+                
             }
             else
             {
-                energy = Math.Min(100f, energy + Time.fixedDeltaTime * 5f);
+                // deplete energy
+                energy = Math.Max(-5f, energy - Time.fixedDeltaTime * 20f);
             }
-            
+
+            _energySlider.value = Math.Max(0, energy);
+
+            _energySliderImage.color = energy < 10f ? new Color(161, 139, 50) : new Color(255, 218, 0);
+
         }
-        else
-        {
-            // deplete energy
-            energy = Math.Max(-5f, energy - Time.fixedDeltaTime * 20f);
-        }
-
-        _energySlider.value = Math.Max(0, energy);
-
-        _energySliderImage.color = energy < 10f ? new Color(161, 139, 50) : new Color(255, 218, 0);
-
     }
 
     private void Move()
@@ -160,7 +170,7 @@ public class PlayerController : MonoBehaviour
 
     public void throwSmoke()
     {
-        if (Input.GetKeyDown(KeyCode.G) && _view.IsMine)
+        if (Input.GetKeyDown(KeyCode.G) && _view.IsMine && _team != 2)
         {
             if (numberOfSmokes > 0)
             {
@@ -182,4 +192,51 @@ public class PlayerController : MonoBehaviour
         ++numberOfSmokes;
     }
 
+    //private void CheckBounds()
+    //{
+    //    Vector3 max1 = GameManager.Instance.MAXBOUNDS1;
+    //    Vector3 max2 = GameManager.Instance.MAXBOUNDS2;
+    //    Vector3 min1 = GameManager.Instance.MINBOUNDS1;
+    //    Vector3 min2 = GameManager.Instance.MINBOUNDS2;
+    //    if (((transform.position.x > max1.x) && (transform.position.z > max1.z))
+    //        || ((transform.position.x > max2.x) && (transform.position.z < max2.z)))
+    //    {
+    //        Debug.Log("Bigger");
+    //        BlowUpPlayer();
+    //    }
+    //    else if (((transform.position.x < min1.x) && (transform.position.z > min1.z)) ||
+    //        ((transform.position.x < min2.x) && (transform.position.z < min2.z)))
+    //    {
+    //        Debug.Log("Smaller");
+    //        BlowUpPlayer();
+    //    }
+    //    else if (transform.position.y < min1.y)
+    //    {
+    //        BlowUpPlayer();
+    //    }
+    //}
+
+    //public void FixCamPos()
+    //{
+    //    Camera cam = cameraHolder.GetComponentInChildren<Camera>();
+    //    cam.transform.position = new Vector3(0f, 0.5f, 0f);
+    //    cam.transform.rotation = Quaternion.identity;
+    //}
+
+    //public void BlowUpPlayer()
+    //{
+    //    Camera cam = cameraHolder.GetComponentInChildren<Camera>();
+    //    //cam.transform.position = new Vector3(0f, 3.76999998f, -8.76000023f);
+    //    //cam.transform.rotation = Quaternion.Euler(16.2700024f, 0f, 0f);
+    //    if (this.GetComponent<Animation>() != null) this.GetComponent<Animation>().Play();
+    //    // Add pos
+    //    _view.RPC(nameof(SpawnConfetti), RpcTarget.MasterClient);
+    //    _playerBlownUp = true;
+    //}
+
+    //[PunRPC]
+    //public void SpawnConfetti()
+    //{
+    //    PhotonNetwork.Instantiate("PlayerConfetti", new Vector3(0f, 0f, 0f), Quaternion.identity);
+    //}
 }

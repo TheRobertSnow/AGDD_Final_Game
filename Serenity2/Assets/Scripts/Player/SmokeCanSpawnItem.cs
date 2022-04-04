@@ -14,6 +14,11 @@ public class SmokeCanSpawnItem : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         
     }
+
+    private void Start()
+    {
+        if (this.gameObject.GetComponent<Animation>() != null) this.gameObject.GetComponent<Animation>().Play();
+    }
     // Update is called once per frame
     void Update()
     {

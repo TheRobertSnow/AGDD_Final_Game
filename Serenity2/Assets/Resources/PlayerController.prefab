@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 275908779176895226}
   - component: {fileID: 1278120933302071429}
   - component: {fileID: 3043204139327037891}
+  - component: {fileID: 7168423425893651353}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -175,6 +176,7 @@ MonoBehaviour:
   maxRoundVariation: 5
   m_Animator: {fileID: 8539776589837216542}
   audioSource: {fileID: 1278120933302071429}
+  reloadAudioSource: {fileID: 7168423425893651353}
   ammoText: {fileID: 1424048026566049886}
 --- !u!82 &1278120933302071429
 AudioSource:
@@ -294,6 +296,102 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!82 &7168423425893651353
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2785398890243016500}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: fe07d8ff6f9f8b942b96cc53af209682, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4633838509375955312
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,7 +405,7 @@ GameObject:
   - component: {fileID: 6160195447503407006}
   - component: {fileID: 6876555750207604550}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PlayerCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -622,14 +720,15 @@ GameObject:
   - component: {fileID: 1402632322170469716}
   - component: {fileID: 4785005552963413955}
   - component: {fileID: 7084102890124100107}
-  - component: {fileID: 7077528504079094998}
   - component: {fileID: 8300311869417019992}
   - component: {fileID: -1669976840836387542}
   - component: {fileID: 924451027779137501}
   - component: {fileID: 4835689242978647030}
   - component: {fileID: 3055103703391010735}
   - component: {fileID: 8570754592528236894}
-  - component: {fileID: 8025117939017707284}
+  - component: {fileID: 7204946827850439938}
+  - component: {fileID: 168743538368414159}
+  - component: {fileID: 3733984924838415883}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -707,20 +806,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &7077528504079094998
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6543518121262361817}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2.0182366
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8300311869417019992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -769,7 +854,9 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!114 &924451027779137501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,8 +878,6 @@ MonoBehaviour:
   smokePrefab: {fileID: 5791761252599130802, guid: 02c7602039a12e344919e5803a3286be, type: 3}
   numberOfSmokes: 2
   energy: 100
-  blueSpawnPoints: []
-  redSpawnPoints: []
   modelAnimator: {fileID: 4482289828225869349}
 --- !u!114 &4835689242978647030
 MonoBehaviour:
@@ -850,7 +935,26 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!54 &8025117939017707284
+--- !u!95 &7204946827850439938
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6543518121262361817}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b7840eadc7b558c4688f250600217188, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!54 &168743538368414159
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -865,7 +969,21 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
+--- !u!136 &3733984924838415883
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6543518121262361817}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7860410899615044745
 GameObject:
   m_ObjectHideFlags: 0

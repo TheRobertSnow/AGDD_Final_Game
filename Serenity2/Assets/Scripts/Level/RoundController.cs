@@ -7,16 +7,23 @@ using Photon.Pun;
 public class RoundController : MonoBehaviour
 {
     public GameObject roundFinished;
+    public GameObject gameFinished;
     private GameObject blueTeamHealthBar;
     private GameObject redTeamHealthBar;
     private GameObject playerAmmo;
     private GameObject playerCrosshair;
+    private GameObject playerEnergy;
+    private GameObject playerSmokeContainer;
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI blueScore;
     public TextMeshProUGUI redScore;
-
     public TextMeshProUGUI countDownText;
-    public int screenTime;
+    public TextMeshProUGUI roundText_2;
+    public TextMeshProUGUI blueScore_2;
+    public TextMeshProUGUI redScore_2;
+    public TextMeshProUGUI countDownText_2;
+    public int screenTime = 5;
+    public int endScreenTime = 15;
     public int roundsToWin = 2;
     private int blueWins = 0;
     private int redWins = 0;
@@ -37,6 +44,8 @@ public class RoundController : MonoBehaviour
         redTeamHealthBar = GameObject.Find("HealthBarRed");
         playerAmmo = GameObject.Find("Ammo");
         playerCrosshair = GameObject.Find("Crosshair");
+        playerEnergy = GameObject.Find("Energy");
+        playerSmokeContainer = GameObject.Find("SmokeContainer");
     }
     public void InitNewRound()
     {
@@ -49,14 +58,14 @@ public class RoundController : MonoBehaviour
             redWins += 1;
         }
         if (blueWins == roundsToWin) {
-            round_text = "Game Winner: Blue";
+            round_text = "BLUE TEAM";
             PlayerPrefs.SetInt("gameWinner", 0);
-            StartCoroutine(WinnerCoroutine(10));
+            StartCoroutine(WinnerCoroutine(endScreenTime));
         }
         else if (redWins == roundsToWin) {
-            round_text = "Game Winner: Red";
+            round_text = "RED TEAM";
             PlayerPrefs.SetInt("gameWinner", 1);
-            StartCoroutine(WinnerCoroutine(10));
+            StartCoroutine(WinnerCoroutine(endScreenTime));
         }
         else {
             StartCoroutine(WaitForSecs(screenTime));
@@ -64,48 +73,56 @@ public class RoundController : MonoBehaviour
     }
     IEnumerator WaitForSecs(int secs)
     {
+        roundText.text = round_text;
+        blueScore.text = blueWins.ToString();
+        redScore.text = redWins.ToString();
         Pause();
+        roundFinished.SetActive(true);
         while (secs > 0) {
             countDownText.text = "Time till next round: " + secs.ToString();
             yield return new WaitForSecondsRealtime(1);
             secs -= 1;
         }
+        roundFinished.SetActive(false);
         Resume();
     }
 
     IEnumerator WinnerCoroutine(int secs)
     {
+        roundText_2.text = round_text;
+        blueScore_2.text = blueWins.ToString();
+        redScore_2.text = redWins.ToString();
         Pause();
+        gameFinished.SetActive(true);
         while (secs > 0) {
-            countDownText.text = "";
+            countDownText_2.text = "";
             yield return new WaitForSecondsRealtime(1);
             secs -= 1;
         }
         Resume();
+        gameFinished.SetActive(false);
         PhotonNetwork.LoadLevel("Lobby");
     }
     void Pause()
     {
-        roundText.text = round_text;
-        blueScore.text = blueWins.ToString();
-        redScore.text = redWins.ToString();
-        countDownText.text = "";
         blueTeamHealthBar.SetActive(false);
         redTeamHealthBar.SetActive(false);
         playerAmmo.SetActive(false);
         playerCrosshair.SetActive(false);
+        playerEnergy.SetActive(false);
+        playerSmokeContainer.SetActive(false);
         gunController.ReloadInstantly();
-        roundFinished.SetActive(true);
         Time.timeScale = 0f;
     }
 
     void Resume()
     {
-        roundFinished.SetActive(false);
         blueTeamHealthBar.SetActive(true);
         redTeamHealthBar.SetActive(true);
         playerAmmo.SetActive(true);
         playerCrosshair.SetActive(true);
+        playerEnergy.SetActive(true);
+        playerSmokeContainer.SetActive(true);
         Time.timeScale = 1f;
     }
 }

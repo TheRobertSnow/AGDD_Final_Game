@@ -38,7 +38,6 @@ public class HealthController : MonoBehaviour
             PlayerPrefs.SetInt("roundWinner", 1);
             resetHealth();
             roundController.InitNewRound();
-            //PhotonNetwork.LoadLevel("GameOver");
         }
     }
 
@@ -51,7 +50,6 @@ public class HealthController : MonoBehaviour
             PlayerPrefs.SetInt("roundWinner", 0);
             resetHealth();
             roundController.InitNewRound();
-            //PhotonNetwork.LoadLevel("GameOver");
         }
     }
 
