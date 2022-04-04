@@ -7,6 +7,10 @@ using Photon.Pun;
 public class RoundController : MonoBehaviour
 {
     public GameObject roundFinished;
+    private GameObject blueTeamHealthBar;
+    private GameObject redTeamHealthBar;
+    private GameObject playerAmmo;
+    private GameObject playerCrosshair;
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI blueScore;
     public TextMeshProUGUI redScore;
@@ -16,57 +20,92 @@ public class RoundController : MonoBehaviour
     public int roundsToWin = 2;
     private int blueWins = 0;
     private int redWins = 0;
+    private string round_text = "";
 
     Gun gunController;
 
+    private PhotonView _photonView;
+
+    private void Awake()
+    {
+        _photonView = GetComponent<PhotonView>();
+    }
     private void Start()
     {
         gunController = FindObjectOfType<Gun>();
+        blueTeamHealthBar = GameObject.Find("HealthBarBlue");
+        redTeamHealthBar = GameObject.Find("HealthBarRed");
+        playerAmmo = GameObject.Find("Ammo");
+        playerCrosshair = GameObject.Find("Crosshair");
     }
     public void InitNewRound()
     {
         if (PlayerPrefs.GetInt("roundWinner") == 0) {
-            roundText.text = "Round Winner: Blue";
+            round_text = "Round Winner: Blue";
             blueWins += 1;
         }
         else if (PlayerPrefs.GetInt("roundWinner") == 1) {
-            roundText.text = "Round Winner: Red";
+            round_text = "Round Winner: Red";
             redWins += 1;
         }
-        blueScore.text = blueWins.ToString();
-        redScore.text = redWins.ToString();
-        if (redWins == roundsToWin) {
-            PlayerPrefs.SetInt("gameWinner", 0);
-            PhotonNetwork.LoadLevel("GameOver");
-        }
         if (blueWins == roundsToWin) {
-            PlayerPrefs.SetInt("gameWinner", 1);
-            PhotonNetwork.LoadLevel("GameOver");
+            round_text = "Game Winner: Blue";
+            PlayerPrefs.SetInt("gameWinner", 0);
+            StartCoroutine(WinnerCoroutine(10));
         }
-        StartCoroutine(WaitForSecs(screenTime));
+        else if (redWins == roundsToWin) {
+            round_text = "Game Winner: Red";
+            PlayerPrefs.SetInt("gameWinner", 1);
+            StartCoroutine(WinnerCoroutine(10));
+        }
+        else {
+            StartCoroutine(WaitForSecs(screenTime));
+        }
     }
     IEnumerator WaitForSecs(int secs)
     {
         Pause();
-        gunController.ReloadInstantly();
-        roundFinished.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
         while (secs > 0) {
             countDownText.text = "Time till next round: " + secs.ToString();
             yield return new WaitForSecondsRealtime(1);
             secs -= 1;
         }
-        Cursor.lockState = CursorLockMode.Locked;
-        roundFinished.SetActive(false);
         Resume();
+    }
+
+    IEnumerator WinnerCoroutine(int secs)
+    {
+        Pause();
+        while (secs > 0) {
+            countDownText.text = "";
+            yield return new WaitForSecondsRealtime(1);
+            secs -= 1;
+        }
+        Resume();
+        PhotonNetwork.LoadLevel("Lobby");
     }
     void Pause()
     {
+        roundText.text = round_text;
+        blueScore.text = blueWins.ToString();
+        redScore.text = redWins.ToString();
+        countDownText.text = "";
+        blueTeamHealthBar.SetActive(false);
+        redTeamHealthBar.SetActive(false);
+        playerAmmo.SetActive(false);
+        playerCrosshair.SetActive(false);
+        gunController.ReloadInstantly();
+        roundFinished.SetActive(true);
         Time.timeScale = 0f;
     }
 
     void Resume()
     {
+        roundFinished.SetActive(false);
+        blueTeamHealthBar.SetActive(true);
+        redTeamHealthBar.SetActive(true);
+        playerAmmo.SetActive(true);
+        playerCrosshair.SetActive(true);
         Time.timeScale = 1f;
     }
 }

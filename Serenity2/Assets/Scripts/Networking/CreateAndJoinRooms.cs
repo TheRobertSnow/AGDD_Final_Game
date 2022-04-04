@@ -21,31 +21,52 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public float timeBetweenUpdates = 1.5f;
     float nextUpdateTime;
 
-    public List<PlayerItem> playerItemsList = new List<PlayerItem>();
+    public List<PlayerItem> blueTeamList = new List<PlayerItem>();
+    public List<PlayerItem> redTeamList = new List<PlayerItem>();
+    public List<SpectatorItem> spectatorList = new List<SpectatorItem>();
+
+    public SpectatorItem spectatorPrefab;
     public PlayerItem playerItemPrefab;
     public PlayerItem otherPlayerItemPrefab;
-    public Transform blueTeamList;
-    public Transform redTeamList;
+
+    public Transform blueTeamPanel;
+    public Transform redTeamPanel;
+    public Transform spectatorPanel;
 
     public GameObject playButton;
+    public GameObject readyButton;
+    public GameObject joinBlueButton;
+    public GameObject joinRedButton;
 
-    
+    public ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
+            {
+                { "blueTeamCount", 0 },
+                { "redTeamCount", 0 },
+            };
+
 
     private void Start() 
     {
-        PhotonNetwork.JoinLobby();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (PhotonNetwork.CurrentLobby == null) {
+            PhotonNetwork.JoinLobby();
+        }
+        if (PlayerPrefs.GetInt("gameWinner") != -1)
+        {
+            PlayerPrefs.SetInt("gameWinner", -1);
+            lobbyPanel.SetActive(false);
+            roomPanel.SetActive(true);
+            roomName.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
+            UpdatePlayerList();
+        }
     }
 
     public void OnClickCreate()
     {
         if (createInput.text.Length > 0)
         {
-            ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
-            {
-                { "blueTeamCount", 0 },
-                { "redTeamCount", 0 },
-            };
-            PhotonNetwork.CreateRoom(createInput.text, new RoomOptions(){ MaxPlayers = 10, BroadcastPropsChangeToAll = true, CustomRoomProperties = roomProperties });
+            PhotonNetwork.CreateRoom(createInput.text, new RoomOptions(){ MaxPlayers = 10, CustomRoomProperties = roomProperties });
         }
     }
 
@@ -54,7 +75,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);
         roomName.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
-        UpdatePlayerList();
+        /* Set player automatically to spectator list */
+        JoinSpectator();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -102,65 +124,130 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         roomPanel.SetActive(false);
         lobbyPanel.SetActive(true);
     }
-
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
     }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    void JoinSpectator()
     {
-        UpdatePlayerList();
+        if (PhotonNetwork.CurrentRoom == null)
+        {
+            return;
+        }
+        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        {
+            if(player.Value.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+                {
+                    ["team"] = 2
+                };
+                player.Value.SetCustomProperties(playerProperties);
+                return;
+            }
+        }
     }
 
+    public void JoinRedTeam()
+    {
+        if (PhotonNetwork.CurrentRoom == null)
+        {
+            return;
+        }
+        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        {
+            if (player.Value.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+                {
+                    ["team"] = 1
+                };
+                player.Value.SetCustomProperties(playerProperties);
+                roomProperties["redTeamCount"] = (int)roomProperties["redTeamCount"] + 1;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+                return;
+            }
+        }
+    }
+    public void JoinBlueTeam()
+    {
+        if (PhotonNetwork.CurrentRoom == null)
+        {
+            return;
+        }
+        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        {
+            if (player.Value.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+                {
+                    ["team"] = 0
+                };
+                player.Value.SetCustomProperties(playerProperties);
+                roomProperties["blueTeamCount"] = (int)roomProperties["blueTeamCount"] + 1;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+                return;
+            }
+        }
+    }
+    
     void UpdatePlayerList()
     {
-        foreach (PlayerItem item in playerItemsList)
-        {
-            Destroy(item.gameObject);
-        }
-        playerItemsList.Clear();
-
         if (PhotonNetwork.CurrentRoom == null)
         {
             return;
         }
 
+        foreach (Transform item in spectatorPanel)
+        {
+            Destroy(item.gameObject);
+        }
+        foreach (Transform item in blueTeamPanel)
+        {
+            Destroy(item.gameObject);
+        }
+        foreach (Transform item in redTeamPanel)
+        {
+            Destroy(item.gameObject);
+        }
+        spectatorList.Clear();
+        blueTeamList.Clear();
+        redTeamList.Clear();
+
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
-            if(player.Value.NickName == PhotonNetwork.NickName)
+            Debug.Log(player.Value.NickName + player.Value.CustomProperties["team"]);
+            Debug.Log(roomProperties["redTeamCount"]);
+            Debug.Log(roomProperties["blueTeamCount"]);
+
+            if ((int)player.Value.CustomProperties["team"] == 2)
             {
-                if (player.Value.CustomProperties.ContainsKey("team"))
-                {
-                    PlayerItem newPlayerItem = Instantiate(playerItemPrefab, (int)player.Value.CustomProperties["team"] == 0 ? blueTeamList : redTeamList);
-                    newPlayerItem.SetPlayerInfo(player.Value);
-                    playerItemsList.Add(newPlayerItem);
-                }
-                else
-                {
-                    PlayerItem newPlayerItem = Instantiate(playerItemPrefab, blueTeamList);
-                    newPlayerItem.SetPlayerInfo(player.Value);
-                    playerItemsList.Add(newPlayerItem);
-                }
+                SpectatorItem spectator = spectatorPrefab;
+                spectator.SetPlayerName(player.Value);
+                spectatorList.Add(spectator);
+                Instantiate(spectator, spectatorPanel);
             }
-            else
+            else if ((int)player.Value.CustomProperties["team"] == 1)
             {
-                if (player.Value.CustomProperties.ContainsKey("team"))
-                {
-                    PlayerItem newPlayerItem = Instantiate(otherPlayerItemPrefab, (int)player.Value.CustomProperties["team"] == 0 ? blueTeamList : redTeamList);
-                    newPlayerItem.SetPlayerInfo(player.Value);
-                    playerItemsList.Add(newPlayerItem);
-                }
-                else
-                {
-                    PlayerItem newPlayerItem = Instantiate(otherPlayerItemPrefab, blueTeamList);
-                    newPlayerItem.SetPlayerInfo(player.Value);
-                    playerItemsList.Add(newPlayerItem);
-                }
+                PlayerItem redTeamPlayer = playerItemPrefab;
+                redTeamPlayer.SetPlayerInfo(player.Value);
+                redTeamList.Add(redTeamPlayer);
+                Instantiate(redTeamPlayer, redTeamPanel);
+            }
+            else if ((int)player.Value.CustomProperties["team"] == 0)
+            {
+                PlayerItem blueTeamPlayer = playerItemPrefab;
+                blueTeamPlayer.SetPlayerInfo(player.Value);
+                blueTeamList.Add(blueTeamPlayer);
+                Instantiate(blueTeamPlayer, blueTeamPanel);
             }
         }
     }
-
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable playerProperties)
+    {
+        UpdatePlayerList();
+    }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         UpdatePlayerList();
@@ -173,7 +260,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        //if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1)
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1)
         {
             playButton.SetActive(true);
@@ -186,6 +272,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void OnClickPlayButton()
     {
-        PhotonNetwork.LoadLevel("PlayfieldTestEikus");
+        PhotonNetwork.LoadLevel("PlayfieldTestDinkus");
     }
 }

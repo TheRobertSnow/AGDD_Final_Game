@@ -9,17 +9,7 @@ using UnityEngine.UI;
 public class PlayerItem : MonoBehaviourPunCallbacks
 {
     public TextMeshProUGUI playerName;
-
-    public ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
-    public GameObject switchTeamButton;
-
-    private PhotonView _view;
     Player player;
-
-    private void Awake()
-    {
-        _view = GetComponent<PhotonView>();
-    }
 
     private void Start()
     {
@@ -33,17 +23,23 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     {
         playerName.text = _player.NickName;
         player = _player;
-        UpdatePlayerItem(player);
+
     }
 
-    public void OnClickSwitchTeams()
+}
+
+/*
+ * 
+    public void SwitchTeams()
     {
         playerProperties["team"] = (int)playerProperties["team"] == 0 ? 1 : 0;
+        playerProperties["new"] = false;
         PhotonNetwork.SetPlayerCustomProperties(playerProperties);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable playerProperties)
     {
+        Debug.Log("player props updated");
         if (player == targetPlayer)
         {
             UpdatePlayerItem(targetPlayer);
@@ -52,13 +48,8 @@ public class PlayerItem : MonoBehaviourPunCallbacks
 
     void UpdatePlayerItem(Player player)
     {
-        if (player.CustomProperties.ContainsKey("team"))
-        {
-            playerProperties["team"] = (int)player.CustomProperties["team"];
-        }
-        else
-        {
-            playerProperties["team"] = 0;
-        }
+        playerProperties["team"] = (int)player.CustomProperties["team"];
+        playerProperties["new"] = (bool)player.CustomProperties["new"];
     }
-}
+ * 
+ * */

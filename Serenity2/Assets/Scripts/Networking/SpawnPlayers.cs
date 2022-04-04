@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class SpawnPlayers : MonoBehaviour
 {
@@ -9,24 +10,22 @@ public class SpawnPlayers : MonoBehaviour
     public Transform[] blueTeamSpawnPoints;
     public Transform[] redTeamSpawnPoints;
     public Transform noTeamSpawnPoint;
-    int randomNumber;
     Transform spawnPoint;
+    int redTeamCount;
+    int blueTeamCount;
     void Start()
     {
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team")) {
-            int playerTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
-            if (playerTeam == 0)
-            {
-                randomNumber = Random.Range(0, blueTeamSpawnPoints.Length);
-                spawnPoint = blueTeamSpawnPoints[randomNumber];
-            }
-            else if (playerTeam == 1)
-            {
-                randomNumber = Random.Range(0, redTeamSpawnPoints.Length);
-                spawnPoint = redTeamSpawnPoints[randomNumber];
-            }
+        int playerTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
+        if (playerTeam == 0)
+        {
+            spawnPoint = blueTeamSpawnPoints[0];
         }
-        else {
+        else if (playerTeam == 1)
+        {
+            spawnPoint = redTeamSpawnPoints[0];
+        }
+        else
+        {
             spawnPoint = noTeamSpawnPoint;
         }
         PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, Quaternion.identity);
