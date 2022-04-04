@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class PlayerItem : MonoBehaviourPunCallbacks
 {
     public TextMeshProUGUI playerName;
+    public TextMeshProUGUI readyText;
     Player player;
 
     private void Start()
@@ -22,34 +23,8 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     public void SetPlayerInfo(Player _player)
     {
         playerName.text = _player.NickName;
+        readyText.text = (bool)_player.CustomProperties["ready"] ? "Ready" : "Not ready";
+        readyText.color = (bool)_player.CustomProperties["ready"] ? Color.green : Color.red;
         player = _player;
-
     }
-
 }
-
-/*
- * 
-    public void SwitchTeams()
-    {
-        playerProperties["team"] = (int)playerProperties["team"] == 0 ? 1 : 0;
-        playerProperties["new"] = false;
-        PhotonNetwork.SetPlayerCustomProperties(playerProperties);
-    }
-
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable playerProperties)
-    {
-        Debug.Log("player props updated");
-        if (player == targetPlayer)
-        {
-            UpdatePlayerItem(targetPlayer);
-        }
-    }
-
-    void UpdatePlayerItem(Player player)
-    {
-        playerProperties["team"] = (int)player.CustomProperties["team"];
-        playerProperties["new"] = (bool)player.CustomProperties["new"];
-    }
- * 
- * */

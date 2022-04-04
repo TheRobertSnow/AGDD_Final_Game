@@ -42,6 +42,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             {
                 { "blueTeamCount", 0 },
                 { "redTeamCount", 0 },
+                { "allPlayersReady", false}
             };
 
 
@@ -139,10 +140,9 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         {
             if(player.Value.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
             {
-                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
-                {
-                    ["team"] = 2
-                };
+                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
+                playerProperties.Add("team", 2);
+                playerProperties.Add("ready", false);
                 player.Value.SetCustomProperties(playerProperties);
                 return;
             }
@@ -159,11 +159,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         {
             if (player.Value.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
             {
-                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
-                {
-                    ["team"] = 1
-                };
+                ExitGames.Client.Photon.Hashtable playerProperties = player.Value.CustomProperties;
+                playerProperties["team"] = 1;
                 player.Value.SetCustomProperties(playerProperties);
+
                 roomProperties["redTeamCount"] = (int)roomProperties["redTeamCount"] + 1;
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
                 return;
@@ -180,11 +179,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         {
             if (player.Value.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
             {
-                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
-                {
-                    ["team"] = 0
-                };
+                ExitGames.Client.Photon.Hashtable playerProperties = player.Value.CustomProperties;
+                playerProperties["team"] = 0;
                 player.Value.SetCustomProperties(playerProperties);
+
                 roomProperties["blueTeamCount"] = (int)roomProperties["blueTeamCount"] + 1;
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
                 return;
@@ -244,6 +242,31 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             }
         }
     }
+    
+    public void OnClickPressReady()
+    {
+        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        {
+            if (player.Value.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                ExitGames.Client.Photon.Hashtable playerProperties = player.Value.CustomProperties;
+                playerProperties["ready"] = !(bool)playerProperties["ready"];
+                readyButton.GetComponentInChildren<TextMeshProUGUI>().text = !(bool)playerProperties["ready"] ? "Ready" : "Unready";
+                player.Value.SetCustomProperties(playerProperties);
+                
+            }
+        }
+    }
+
+    bool CheckAllPlayersReady()
+    {
+        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        {
+            if ((int)player.Value.CustomProperties["team"] != 2 && !(bool)player.Value.CustomProperties["ready"]) return false;
+        }
+        return true;
+    }
+    
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable playerProperties)
     {
         UpdatePlayerList();
@@ -260,7 +283,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1)
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1 && CheckAllPlayersReady())
         {
             playButton.SetActive(true);
         }
