@@ -29,8 +29,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     private void Start() 
     {
-        //Cursor.lockState = CursorLockMode.None;
-        //Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         if (PhotonNetwork.CurrentLobby == null) {
             PhotonNetwork.JoinLobby();
         }

@@ -65,27 +65,22 @@ public class RoundController : MonoBehaviour
     IEnumerator WaitForSecs(int secs)
     {
         Pause();
-        Cursor.lockState = CursorLockMode.None;
         while (secs > 0) {
             countDownText.text = "Time till next round: " + secs.ToString();
             yield return new WaitForSecondsRealtime(1);
             secs -= 1;
         }
-        Cursor.lockState = CursorLockMode.Locked;
         Resume();
     }
 
     IEnumerator WinnerCoroutine(int secs)
     {
         Pause();
-        Cursor.lockState = CursorLockMode.None;
         while (secs > 0) {
             countDownText.text = "";
             yield return new WaitForSecondsRealtime(1);
             secs -= 1;
         }
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
         Resume();
         PhotonNetwork.LoadLevel("Lobby");
     }
