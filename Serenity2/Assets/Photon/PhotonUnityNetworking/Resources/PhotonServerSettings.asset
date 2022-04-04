@@ -49,6 +49,9 @@ MonoBehaviour:
   - DestroyCurrentObject
   - SetSpawnState
   - RemoveObj
+  - DisablePickup
+  - EnablePickup
+  - SpawnConfetti
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
