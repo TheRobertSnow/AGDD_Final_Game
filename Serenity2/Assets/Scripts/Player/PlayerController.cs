@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _smoothMoveVelocity;
     private Vector3 _moveAmount;
     private PhotonView _view;
-    private int _team; // 0 = blue, 1 = red
+    private int _team; // 0 = blue, 1 = red, 2 = spectator
 
     private Slider _energySlider;
     private Image _energySliderImage;
@@ -95,29 +95,32 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateEnergy()
     {
-        if (!isSprinting())
+        if (_team != 2)
         {
-            if (energy < 5f)
+            if (!isSprinting())
             {
-                // energy is restore slower if almost empty to stop spam
-                energy = Math.Min(100f, energy + Time.fixedDeltaTime);
+                if (energy < 5f)
+                {
+                    // energy is restore slower if almost empty to stop spam
+                    energy = Math.Min(100f, energy + Time.fixedDeltaTime);
+                }
+                else
+                {
+                    energy = Math.Min(100f, energy + Time.fixedDeltaTime * 5f);
+                }
+                
             }
             else
             {
-                energy = Math.Min(100f, energy + Time.fixedDeltaTime * 5f);
+                // deplete energy
+                energy = Math.Max(-5f, energy - Time.fixedDeltaTime * 20f);
             }
-            
+
+            _energySlider.value = Math.Max(0, energy);
+
+            _energySliderImage.color = energy < 10f ? new Color(161, 139, 50) : new Color(255, 218, 0);
+
         }
-        else
-        {
-            // deplete energy
-            energy = Math.Max(-5f, energy - Time.fixedDeltaTime * 20f);
-        }
-
-        _energySlider.value = Math.Max(0, energy);
-
-        _energySliderImage.color = energy < 10f ? new Color(161, 139, 50) : new Color(255, 218, 0);
-
     }
 
     private void Move()
@@ -167,7 +170,7 @@ public class PlayerController : MonoBehaviour
 
     public void throwSmoke()
     {
-        if (Input.GetKeyDown(KeyCode.G) && _view.IsMine)
+        if (Input.GetKeyDown(KeyCode.G) && _view.IsMine && _team != 2)
         {
             if (numberOfSmokes > 0)
             {

@@ -11,16 +11,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: 9a870bb426cea8d4a9f5fc36c486efda
-  - enabled: 1
+  - enabled: 0
+    path: Assets/Scenes/Game - Danni.unity
+    guid: 6aebd2025751f394782c5b4660d2614d
+  - enabled: 0
     path: Assets/Scenes/WaitingRoom.unity
     guid: 447aa83440535e64984dbb045542c461
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayfieldTest.unity
     guid: d197dc9f6a177064facee0c786409cc5
   - enabled: 0
     path: Assets/Scenes/Arnar.unity
     guid: cb6f3a9e4a57a634ea758c9db7b2beb6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameOver.unity
     guid: 517c8d618f553b74e866aa41f614ecb4
   - enabled: 1

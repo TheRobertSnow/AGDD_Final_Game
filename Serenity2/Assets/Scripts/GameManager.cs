@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviourPun
     #region Singleton
     private static GameManager _instance;
     
+    private int _team;
+    private GameObject mainCanvas;
+    private GameObject playerCanvas;
     public static GameManager Instance
     {
         get
@@ -43,7 +46,18 @@ public class GameManager : MonoBehaviourPun
             PhotonNetwork.Instantiate("ItemSpawn", new Vector3(48.2709999f, 4f, 31.4899998f), Quaternion.identity);
             PhotonNetwork.Instantiate("ItemSpawn", new Vector3(39.3899994f, 4f, -29.4899998f), Quaternion.identity);
         }
+
+        // Spectator hide stuff
+        _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
+        if (_team == 2) {
+            mainCanvas = GameObject.Find("MainCanvas");
+            playerCanvas = GameObject.Find("PlayerCanvas");
+            mainCanvas.SetActive(false);
+            playerCanvas.SetActive(false);
+        }
     }
+
+
 
 
 }
