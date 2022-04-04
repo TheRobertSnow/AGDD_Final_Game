@@ -43,10 +43,13 @@ public class Gun : MonoBehaviour
 
     public Animator m_Animator;
     public AudioSource audioSource;
+    public AudioSource reloadAudioSource;
 
     [Header("Text properties")] public TextMeshProUGUI ammoText;
 
     private ShootState shootState = ShootState.Ready;
+
+    private GameObject _hand;
 
     // The next time that the gun is able to shoot at
     private float nextShootTime = 0;
@@ -62,6 +65,8 @@ public class Gun : MonoBehaviour
     {
         //muzzleOffset = GetComponent<Renderer>().bounds.extents.z;
         remainingAmmunition = ammunition;
+        _hand = GameObject.Find("hand");
+        Debug.Log(_hand);
     }
 
     void Update()
@@ -76,12 +81,14 @@ public class Gun : MonoBehaviour
                 // If the gun is ready to shoot again...
                 if (Time.time > nextShootTime)
                 {
+                    _hand.SetActive(true);
                     shootState = ShootState.Ready;
                 }
 
                 break;
             case ShootState.Reloading:
                 // If the gun has finished reloading...
+                // _hand.SetActive(false);
                 if (Time.time > nextShootTime)
                 {
                     int ammoBeforeReload = ammunition;
@@ -89,6 +96,7 @@ public class Gun : MonoBehaviour
                     ammunition = Math.Max(1, ammunition - 12);
                     remainingAmmunition = Math.Min(ammoBeforeReload, 12);
                     shootState = ShootState.Ready;
+                    _hand.SetActive(true);
                 }
 
                 break;
@@ -171,9 +179,12 @@ public class Gun : MonoBehaviour
         // Checks that the gun is ready to be reloaded
         if (shootState == ShootState.Ready)
         {
+            
             nextShootTime = Time.time + reloadTime;
             shootState = ShootState.Reloading;
-        }
+            reloadAudioSource.Play();
+            _hand.SetActive(false);
+        } 
     }
 
     public void ReloadInstantly()
