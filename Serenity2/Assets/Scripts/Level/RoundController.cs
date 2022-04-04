@@ -30,6 +30,7 @@ public class RoundController : MonoBehaviour
     private string round_text = "";
 
     Gun gunController;
+    public AudioSource whatMemeAudio;
 
     private PhotonView _photonView;
 
@@ -89,6 +90,7 @@ public class RoundController : MonoBehaviour
 
     IEnumerator WinnerCoroutine(int secs)
     {
+        whatMemeAudio.Play();
         roundText_2.text = round_text;
         blueScore_2.text = blueWins.ToString();
         redScore_2.text = redWins.ToString();
@@ -101,6 +103,7 @@ public class RoundController : MonoBehaviour
         }
         Resume();
         gameFinished.SetActive(false);
+        whatMemeAudio.Stop();
         PhotonNetwork.LoadLevel("Lobby");
     }
     void Pause()
