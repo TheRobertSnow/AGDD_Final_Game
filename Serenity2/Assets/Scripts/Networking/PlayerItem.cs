@@ -32,6 +32,7 @@ public class PlayerItem : MonoBehaviourPunCallbacks
 
     public void onClickLeftArrow()
     {
+        Debug.Log("OnleftClick");
         if ((int)playerProperties["team"] == 0)
         {
             playerProperties["team"] = teams.Length - 1;
@@ -55,6 +56,7 @@ public class PlayerItem : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable playerProperties)
     {
+        Debug.Log("player props updated");
         if (player == targetPlayer)
         {
             UpdatePlayerItem(targetPlayer);

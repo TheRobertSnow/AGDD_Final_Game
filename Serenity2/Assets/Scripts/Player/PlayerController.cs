@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine.UI;
 using Vector3 = UnityEngine.Vector3;
 
@@ -30,12 +31,16 @@ public class PlayerController : MonoBehaviour
 
     private bool _playerBlownUp = false;
 
+    private TMP_Text _grenadeText;
+
     private void Awake()
     {
         _view = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody>();
         _energySlider = GameObject.Find("SliderYellow").GetComponent<Slider>();
         _energySliderImage = _energySlider.GetComponentInChildren<Image>();
+        _grenadeText = GameObject.Find("SmokeCountText").GetComponent<TMP_Text>();
+        Debug.Log(_grenadeText);
     }
 
     private void Start()
@@ -174,6 +179,9 @@ public class PlayerController : MonoBehaviour
                 --numberOfSmokes;
             }
         }
+        
+        // update text for number of smokes
+        _grenadeText.text = numberOfSmokes.ToString();
     }
 
     public void IncrementSmokeCount()

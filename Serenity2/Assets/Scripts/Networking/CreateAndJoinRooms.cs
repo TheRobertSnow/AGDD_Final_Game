@@ -29,7 +29,19 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     private void Start() 
     {
-        PhotonNetwork.JoinLobby();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (PhotonNetwork.CurrentLobby == null) {
+            PhotonNetwork.JoinLobby();
+        }
+        if (PlayerPrefs.GetInt("gameWinner") != -1)
+        {
+            PlayerPrefs.SetInt("gameWinner", -1);
+            lobbyPanel.SetActive(false);
+            roomPanel.SetActive(true);
+            roomName.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
+            UpdatePlayerList();
+        }
     }
 
     public void OnClickCreate()
@@ -94,7 +106,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         roomPanel.SetActive(false);
         lobbyPanel.SetActive(true);
     }
-
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
@@ -133,7 +144,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        //if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1)
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1)
         {
             playButton.SetActive(true);
