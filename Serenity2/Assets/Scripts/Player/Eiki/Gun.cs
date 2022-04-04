@@ -52,6 +52,7 @@ public class Gun : MonoBehaviour
     private float nextShootTime = 0;
 
     private PhotonView _PV;
+    private int _team;
 
     private void Awake()
     {
@@ -62,6 +63,7 @@ public class Gun : MonoBehaviour
     {
         //muzzleOffset = GetComponent<Renderer>().bounds.extents.z;
         remainingAmmunition = ammunition;
+        _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
     }
 
     void Update()
@@ -118,8 +120,9 @@ public class Gun : MonoBehaviour
     /// Attempts to fire the gun
     public void Shoot()
     {
+
         // Checks that the gun is ready to shoot
-        if (shootState == ShootState.Ready && PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team"))
+        if (shootState == ShootState.Ready && _team != 2)
         {
             for (int i = 0; i < roundsPerShot; i++)
             {
