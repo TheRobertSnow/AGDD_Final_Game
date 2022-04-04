@@ -9,6 +9,10 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     public TMP_InputField usernameInput;
     public TextMeshProUGUI buttonText;
 
+    private void Awake()
+    {
+        PlayerPrefs.SetInt("gameWinner", -1);
+    }
     public void OnClickConnect()
     {
         if (usernameInput.text.Length > 0)

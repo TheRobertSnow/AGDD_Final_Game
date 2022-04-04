@@ -32,8 +32,8 @@ public class HealthController : MonoBehaviour
         blueTeamSlider.value = blueTeamHealth;
         if (blueTeamHealth == 0) {
             PlayerPrefs.SetInt("roundWinner", 1);
-            roundController.InitNewRound();
             resetHealth();
+            roundController.InitNewRound();
             //PhotonNetwork.LoadLevel("GameOver");
         }
     }
@@ -44,8 +44,8 @@ public class HealthController : MonoBehaviour
         redTeamSlider.value = redTeamHealth;
         if (redTeamHealth == 0) {
             PlayerPrefs.SetInt("roundWinner", 0);
-            roundController.InitNewRound();
             resetHealth();
+            roundController.InitNewRound();
             //PhotonNetwork.LoadLevel("GameOver");
         }
     }
