@@ -133,3 +133,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetManager: {fileID: 0}
+  targetSpeed: 2.5
+  sizeScaleMax: 1
+  sizeScaleMin: 0.5

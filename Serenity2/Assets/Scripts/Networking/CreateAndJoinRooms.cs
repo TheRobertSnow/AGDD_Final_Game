@@ -156,6 +156,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void OnClickPlayButton()
     {
-        PhotonNetwork.LoadLevel("Arnar");
+        PhotonNetwork.LoadLevel("PlayfieldTestDinkus");
     }
 }

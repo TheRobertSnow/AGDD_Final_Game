@@ -84,7 +84,10 @@ public class Gun : MonoBehaviour
                 // If the gun has finished reloading...
                 if (Time.time > nextShootTime)
                 {
-                    remainingAmmunition = ammunition;
+                    int ammoBeforeReload = ammunition;
+                    if (ammoBeforeReload == 0) ammoBeforeReload = 1;
+                    ammunition = Math.Max(1, ammunition - 12);
+                    remainingAmmunition = Math.Min(ammoBeforeReload, 12);
                     shootState = ShootState.Ready;
                 }
 
@@ -175,9 +178,15 @@ public class Gun : MonoBehaviour
 
     public void ReloadInstantly()
     {
+        Debug.Log("realod?!");
         // Checks that the gun is ready to be reloaded
         remainingAmmunition = ammunition;
         shootState = ShootState.Ready;
         nextShootTime = Time.time;
+    }
+
+    public void IncrementAmmo()
+    {
+        ammunition += 36;
     }
 }

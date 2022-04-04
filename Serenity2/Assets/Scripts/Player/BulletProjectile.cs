@@ -35,7 +35,7 @@ public class BulletProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     private void OnDestroy()
     {
-        Debug.Log(GetComponent<Rigidbody>().position);
+        // Debug.Log(GetComponent<Rigidbody>().position);
     }
 
     void destroyInSeconds()

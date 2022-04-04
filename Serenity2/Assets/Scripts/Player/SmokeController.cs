@@ -19,18 +19,12 @@ public class SmokeController : MonoBehaviour, IPunInstantiateMagicCallback
         _view = GetComponent<PhotonView>();
     }
 
-
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
-    void Update()
-    {
-        // Moves the smoke with canister but the result is scuffed
-        //_smokeEff.transform.position = transform.position;
-    }
+    //void Update()
+    //{
+    //    // Moves the smoke with canister but the result is scuffed
+    //    //_smokeEff.transform.position = transform.position;
+    //}
 
     public void RunSmokeAnimation()
     {

@@ -632,7 +632,7 @@ GameObject:
   - component: {fileID: 8025117939017707284}
   m_Layer: 0
   m_Name: PlayerController
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -685,7 +685,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a54489537258da44f8b4f3bfd829b881, type: 2}
+  - {fileID: 2100000, guid: 66c023b9e2e7721448060abc3b4302cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -783,7 +783,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraHolder: {fileID: 656617058460944624}
-  mouseSensitivity: 3
   sprintSpeed: 9
   walkSpeed: 6
   jumpForce: 300
@@ -791,6 +790,9 @@ MonoBehaviour:
   playerName: {fileID: 8444782542020146797}
   smokePrefab: {fileID: 5791761252599130802, guid: 02c7602039a12e344919e5803a3286be, type: 3}
   numberOfSmokes: 2
+  energy: 100
+  blueSpawnPoints: []
+  redSpawnPoints: []
   modelAnimator: {fileID: 4482289828225869349}
 --- !u!114 &4835689242978647030
 MonoBehaviour:
