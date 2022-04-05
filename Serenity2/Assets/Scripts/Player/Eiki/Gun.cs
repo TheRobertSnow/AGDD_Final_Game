@@ -45,7 +45,7 @@ public class Gun : MonoBehaviour
     public AudioSource audioSource;
     public AudioSource reloadAudioSource;
 
-    [Header("Text properties")] public TextMeshProUGUI ammoText;
+    private TextMeshProUGUI ammoText;
 
     private ShootState shootState = ShootState.Ready;
 
@@ -67,6 +67,7 @@ public class Gun : MonoBehaviour
         //muzzleOffset = GetComponent<Renderer>().bounds.extents.z;
         remainingAmmunition = ammunition;
         _hand = GameObject.Find("hand");
+        ammoText = GameObject.Find("Ammo").GetComponent<TextMeshProUGUI>();
         Debug.Log(_hand);
         _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
     }

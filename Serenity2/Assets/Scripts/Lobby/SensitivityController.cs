@@ -12,12 +12,18 @@ public class SensitivityController : MonoBehaviour
     {
         // Slider properties
         slider.onValueChanged.AddListener(OnSliderValueChanged);
-        slider.value = 1f;
-        slider.minValue = 0.1f;
-        slider.maxValue = 10f;
-
         // Input properties
         sensitivityInput.onValueChanged.AddListener(delegate { OnInputValueChanged();  });
+        if (PlayerPrefs.HasKey("sensitivity")){
+            slider.value = PlayerPrefs.GetFloat("sensitivity");
+            sensitivityInput.text = PlayerPrefs.GetFloat("sensitivity").ToString();
+        }
+        else {
+            slider.value = 1.0f;
+            sensitivityInput.text = "1";
+        }
+        slider.minValue = 0.1f;
+        slider.maxValue = 10f;
     }
 
     void OnInputValueChanged()
@@ -26,7 +32,6 @@ public class SensitivityController : MonoBehaviour
         PlayerPrefs.SetFloat("sensitivity", newVal);
         slider.value = PlayerPrefs.GetFloat("sensitivity");
     }
-
     void OnSliderValueChanged(float value)
     {
         // globally change the percentage volume of all audio sources
