@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private Slider _energySlider;
     private Image _energySliderImage;
+    public bool gamePaused = false;
 
     public Animator modelAnimator;
     Player player;
@@ -75,9 +76,11 @@ public class PlayerController : MonoBehaviour
         }
 
         Look();
-        Move();
-        Jump();
-        throwSmoke();
+        if (!gamePaused) {
+            Move();
+            Jump();
+            throwSmoke();
+        }
         //if (!_playerBlownUp)
         //{
         //    CheckBounds();
