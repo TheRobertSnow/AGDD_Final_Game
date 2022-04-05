@@ -95,8 +95,8 @@ public class Gun : MonoBehaviour
                 if (Time.time > nextShootTime)
                 {
                     int ammoBeforeReload = ammunition;
-                    if (ammoBeforeReload == 0) ammoBeforeReload = 1;
-                    ammunition = Math.Max(1, ammunition - 12);
+                    //if (ammoBeforeReload == 0) ammoBeforeReload = 1;
+                    ammunition = Math.Max(0, ammunition - 12);
                     remainingAmmunition = Math.Min(ammoBeforeReload, 12);
                     shootState = ShootState.Ready;
                     _hand.SetActive(true);
@@ -131,7 +131,7 @@ public class Gun : MonoBehaviour
     {
         if (_PV.IsMine) {
             // Checks that the gun is ready to shoot
-            if (shootState == ShootState.Ready && _team != 2)
+            if (shootState == ShootState.Ready && _team != 2 && remainingAmmunition != 0)
             {
                 for (int i = 0; i < roundsPerShot; i++)
                 {
@@ -170,7 +170,7 @@ public class Gun : MonoBehaviour
                     nextShootTime = Time.time + (1 / fireRate);
                     shootState = ShootState.Shooting;
                 }
-                else
+                else if (remainingAmmunition == 0 && ammunition > 0)
                 {
                     Reload();
                 }
@@ -204,6 +204,6 @@ public class Gun : MonoBehaviour
 
     public void IncrementAmmo()
     {
-        ammunition += 36;
+        ammunition += 6;
     }
 }
