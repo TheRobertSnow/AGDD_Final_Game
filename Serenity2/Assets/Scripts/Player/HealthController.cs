@@ -69,7 +69,10 @@ public class HealthController : MonoBehaviour
         }
         else
         {
-            damageAudio.Play();
+            int myTeam = (int) PhotonNetwork.LocalPlayer.CustomProperties["team"];
+            if (myTeam != 2) {
+                damageAudio.Play();
+            }
         }
     }
     

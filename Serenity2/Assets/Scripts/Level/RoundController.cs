@@ -115,14 +115,15 @@ public class RoundController : MonoBehaviour
     }
     void Pause()
     {
+        playerController.gamePaused = true;
         blueTeamHealthBar.SetActive(false);
         redTeamHealthBar.SetActive(false);
         playerAmmo.SetActive(false);
         playerCrosshair.SetActive(false);
         playerEnergy.SetActive(false);
         playerSmokeContainer.SetActive(false);
-        gunController.ReloadInstantly();
-        playerController.ReloadEnergy();
+        //gunController.ReloadInstantly();
+        //playerController.ReloadEnergy();
         playerController.ReloadSmokes();
         RemoveSmokes();
         Time.timeScale = 0f;
@@ -137,6 +138,7 @@ public class RoundController : MonoBehaviour
         playerEnergy.SetActive(true);
         playerSmokeContainer.SetActive(true);
         Time.timeScale = 1f;
+        playerController.gamePaused = false;
     }
 
     void RemoveSmokes()
