@@ -131,11 +131,11 @@ public class PlayerController : MonoBehaviour
             _moveAmount,
             moveDir * (isSprinting() ? sprintSpeed : walkSpeed), ref _smoothMoveVelocity, smoothTime);
 
-        float velocityZ = Vector3.Dot(moveDir.normalized, transform.forward);
-        float velocityX = Vector3.Dot(moveDir.normalized, transform.right);
+        float velocityZ = Vector3.Dot(moveDir, transform.forward);
+        float velocityX = Vector3.Dot(moveDir, transform.right);
 
-        modelAnimator.SetFloat("VelocityZ", velocityZ/* , 0.1f, Time.deltaTime */);
-        modelAnimator.SetFloat("VelocityX", velocityX/* , 0.1f, Time.deltaTime */);
+        modelAnimator.SetFloat("VelocityZ", velocityZ , 0.1f, Time.deltaTime);
+        modelAnimator.SetFloat("VelocityX", velocityX , 0.1f, Time.deltaTime);
     }
 
     private void Jump()
