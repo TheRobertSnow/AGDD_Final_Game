@@ -52,6 +52,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         if (PhotonNetwork.CurrentLobby == null) {
+            Debug.Log("Hallo");
             PhotonNetwork.JoinLobby();
         }
         if (PlayerPrefs.GetInt("gameWinner") != -1)
@@ -60,6 +61,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             lobbyPanel.SetActive(false);
             roomPanel.SetActive(true);
             roomName.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
+            //ExitGames.Client.Photon.Hashtable currentRoomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+            //currentRoomProperties["allPlayersReady"] = false;
+            //currentRoomProperties["status"] = "waiting";
+            //PhotonNetwork.CurrentRoom.SetCustomProperties(currentRoomProperties);
+            //OnClickPressReady();
             UpdatePlayerList();
         }
     }
@@ -270,7 +276,12 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
-            if ((int)player.Value.CustomProperties["team"] != 2 && !(bool)player.Value.CustomProperties["ready"]) return false;
+            try{
+                if ((int)player.Value.CustomProperties["team"] != 2 && !(bool)player.Value.CustomProperties["ready"]) return false;
+            }
+            catch{
+                return false;
+            }
         }
         return true;
     }
