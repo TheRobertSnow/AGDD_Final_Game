@@ -149,9 +149,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         {
             if(player.Value.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
             {
-                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
-                playerProperties.Add("team", 2);
-                playerProperties.Add("ready", false);
+                ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+                {
+                    ["team"] = 2,
+                    ["ready"] = false
+                };
                 player.Value.SetCustomProperties(playerProperties);
                 return;
             }

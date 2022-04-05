@@ -9,6 +9,7 @@ using Vector3 = UnityEngine.Vector3;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] public GameObject cameraHolder;
+    [SerializeField] public Camera camera;
     [SerializeField] public float sprintSpeed, walkSpeed, jumpForce, smoothTime;
     [SerializeField] public TextMesh playerName;
     [SerializeField] public GameObject smokePrefab;
@@ -37,24 +38,33 @@ public class PlayerController : MonoBehaviour
     {
         _view = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody>();
-        _energySlider = GameObject.Find("SliderYellow").GetComponent<Slider>();
-        _energySliderImage = _energySlider.GetComponentInChildren<Image>();
-        _grenadeText = GameObject.Find("SmokeCountText").GetComponent<TMP_Text>();
-        Debug.Log(_grenadeText);
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["team"] != 2)
+        {
+            _energySlider = GameObject.Find("SliderYellow").GetComponent<Slider>();
+            _energySliderImage = _energySlider.GetComponentInChildren<Image>();
+            _grenadeText = GameObject.Find("SmokeCountText").GetComponent<TMP_Text>();
+            Debug.Log(_grenadeText);
+        }
     }
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        playerName.text = PhotonNetwork.LocalPlayer.NickName;
+        _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
         if (!_view.IsMine)
         {
-            Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(_rb);
             SetName();
         }
-        playerName.text = PhotonNetwork.LocalPlayer.NickName;
-        _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
+        else
+        {
+            camera.gameObject.SetActive(true);
+        }
+        //Destroy(GetComponentInChildren<Camera>().gameObject);
+
+
     }
 
     private void Update()
