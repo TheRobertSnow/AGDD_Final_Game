@@ -6336,7 +6336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  hitsToWinRound: 1
+  hitsToWinRound: 2
   pingAudio: {fileID: 872701059}
   damageAudio: {fileID: 872701058}
 --- !u!4 &872701057
@@ -8639,8 +8639,9 @@ MonoBehaviour:
   countDownText_2: {fileID: 1726091982}
   screenTime: 5
   endScreenTime: 10
-  roundsToWin: 2
+  roundsToWin: 3
   whatMemeAudio: {fileID: 1253172228}
+  playerGameObjects: []
 --- !u!4 &1253172227
 Transform:
   m_ObjectHideFlags: 0

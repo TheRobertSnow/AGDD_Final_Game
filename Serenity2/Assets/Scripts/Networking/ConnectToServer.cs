@@ -25,6 +25,8 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
+        Debug.Log("On connected ehv shit");
         SceneManager.LoadScene("Lobby");
     }
 }
+

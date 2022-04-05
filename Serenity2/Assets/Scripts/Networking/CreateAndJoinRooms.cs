@@ -46,27 +46,26 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         { "allPlayersReady", false}
     };
 
+    private PhotonView _photonView;
+
+    private void Awake()
+    {
+        _photonView = GetComponent<PhotonView>();
+    }
 
     private void Start() 
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         if (PhotonNetwork.CurrentLobby == null) {
-            Debug.Log("Hallo");
             PhotonNetwork.JoinLobby();
         }
         if (PlayerPrefs.GetInt("gameWinner") != -1)
         {
-            PlayerPrefs.SetInt("gameWinner", -1);
             lobbyPanel.SetActive(false);
             roomPanel.SetActive(true);
             roomName.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
-            //ExitGames.Client.Photon.Hashtable currentRoomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-            //currentRoomProperties["allPlayersReady"] = false;
-            //currentRoomProperties["status"] = "waiting";
-            //PhotonNetwork.CurrentRoom.SetCustomProperties(currentRoomProperties);
-            //OnClickPressReady();
-            UpdatePlayerList();
+            JoinSpectator();
         }
     }
 
@@ -96,7 +95,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         }
     }
 
-    void UpdateRoomList(List<RoomInfo> list)
+    public void UpdateRoomList(List<RoomInfo> list)
     {
         foreach (RoomItem item in roomItemsList)
         {   
