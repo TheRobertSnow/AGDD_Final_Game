@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
             {
                 System.Object[] data = new System.Object[1];
                 Vector3 velocity = GameObject.Find("CameraHolder").GetComponentInChildren<Camera>().transform.forward;
-                data[0] = velocity;
+                data[0] = velocity * 2;
                 Vector3 spawn = GameObject.Find("SmokeSpawn").transform.position;
                 PhotonNetwork.Instantiate("smokeCan", spawn, Quaternion.identity, data: data);
                 --numberOfSmokes;
@@ -200,6 +200,15 @@ public class PlayerController : MonoBehaviour
     public void IncrementSmokeCount()
     {
         ++numberOfSmokes;
+    }
+
+    public void ReloadSmokes()
+    {
+        numberOfSmokes = 3;
+    }
+    public void ReloadEnergy()
+    {
+        energy = 100f;
     }
 
     //private void CheckBounds()
