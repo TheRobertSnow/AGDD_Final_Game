@@ -54,11 +54,11 @@ public class RoundController : MonoBehaviour
     public void InitNewRound()
     {
         if (PlayerPrefs.GetInt("roundWinner") == 0) {
-            round_text = "Round Winner: Blue";
+            round_text = "Round Winner:  Blue Team";
             blueWins += 1;
         }
         else if (PlayerPrefs.GetInt("roundWinner") == 1) {
-            round_text = "Round Winner: Red";
+            round_text = "Round Winner:  Red Team";
             redWins += 1;
         }
         if (blueWins == roundsToWin) {
