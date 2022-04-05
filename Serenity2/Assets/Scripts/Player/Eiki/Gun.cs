@@ -129,7 +129,7 @@ public class Gun : MonoBehaviour
     /// Attempts to fire the gun
     public void Shoot()
     {
-
+        
         // Checks that the gun is ready to shoot
         if (shootState == ShootState.Ready && _team != 2)
         {
