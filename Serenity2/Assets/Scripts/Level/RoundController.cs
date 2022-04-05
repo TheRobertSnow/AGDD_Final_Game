@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class RoundController : MonoBehaviour
 {
@@ -31,15 +32,11 @@ public class RoundController : MonoBehaviour
 
     Gun gunController;
     public AudioSource whatMemeAudio;
-
-    private PhotonView _photonView;
-
-    private void Awake()
-    {
-        _photonView = GetComponent<PhotonView>();
-    }
+    public GameObject[] playerGameObjects;
     private void Start()
     {
+        blueWins = 0;
+        redWins = 0;
         gunController = FindObjectOfType<Gun>();
         blueTeamHealthBar = GameObject.Find("HealthBarBlue");
         redTeamHealthBar = GameObject.Find("HealthBarRed");
@@ -104,7 +101,9 @@ public class RoundController : MonoBehaviour
         Resume();
         gameFinished.SetActive(false);
         whatMemeAudio.Stop();
-        PhotonNetwork.LoadLevel("Lobby");
+        if (PhotonNetwork.IsMasterClient) {
+            PhotonNetwork.LoadLevel("Lobby");
+        }
     }
     void Pause()
     {
