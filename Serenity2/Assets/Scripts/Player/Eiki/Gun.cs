@@ -129,50 +129,51 @@ public class Gun : MonoBehaviour
     /// Attempts to fire the gun
     public void Shoot()
     {
-        
-        // Checks that the gun is ready to shoot
-        if (shootState == ShootState.Ready && _team != 2)
-        {
-            for (int i = 0; i < roundsPerShot; i++)
+        if (_PV.IsMine) {
+            // Checks that the gun is ready to shoot
+            if (shootState == ShootState.Ready && _team != 2)
             {
-                // Create a ray from the camera going through the middle of your screen
-                Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
-                RaycastHit hit;
-                // Check whether your are pointing to something so as to adjust the direction
-                Vector3 targetPoint;
-                if (Physics.Raycast(ray, out hit))
+                for (int i = 0; i < roundsPerShot; i++)
                 {
-                    targetPoint = hit.point;
+                    // Create a ray from the camera going through the middle of your screen
+                    Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
+                    RaycastHit hit;
+                    // Check whether your are pointing to something so as to adjust the direction
+                    Vector3 targetPoint;
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        targetPoint = hit.point;
+                    }
+                    else
+                    {
+                        targetPoint = ray.GetPoint(1000);
+                    }
+                    
+                    Vector3 velocity = (targetPoint - transform.position).normalized * roundSpeed;
+                    object[] data = new object[2];
+                    data[0] = velocity;
+                    data[1] = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
+                    GameObject clone = PhotonNetwork.Instantiate(
+                        "BulletProjectile",
+                        transform.position + transform.forward * 1f,
+                        transform.rotation, data: data);
+
+                    Rigidbody rb = clone.GetComponent<Rigidbody>();
+
+                    rb.velocity = (targetPoint - transform.position).normalized * roundSpeed;
+                }
+                m_Animator.SetTrigger("Shoot");
+                audioSource.Play();
+                remainingAmmunition--;
+                if (remainingAmmunition > 0)
+                {
+                    nextShootTime = Time.time + (1 / fireRate);
+                    shootState = ShootState.Shooting;
                 }
                 else
                 {
-                    targetPoint = ray.GetPoint(1000);
+                    Reload();
                 }
-                
-                Vector3 velocity = (targetPoint - transform.position).normalized * roundSpeed;
-                object[] data = new object[2];
-                data[0] = velocity;
-                data[1] = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
-                GameObject clone = PhotonNetwork.Instantiate(
-                    "BulletProjectile",
-                    transform.position + transform.forward * 1f,
-                    transform.rotation, data: data);
-
-                Rigidbody rb = clone.GetComponent<Rigidbody>();
-
-                rb.velocity = (targetPoint - transform.position).normalized * roundSpeed;
-            }
-            m_Animator.SetTrigger("Shoot");
-            audioSource.Play();
-            remainingAmmunition--;
-            if (remainingAmmunition > 0)
-            {
-                nextShootTime = Time.time + (1 / fireRate);
-                shootState = ShootState.Shooting;
-            }
-            else
-            {
-                Reload();
             }
         }
     }
@@ -180,20 +181,21 @@ public class Gun : MonoBehaviour
     /// Attempts to reload the gun
     public void Reload()
     {
-        // Checks that the gun is ready to be reloaded
-        if (shootState == ShootState.Ready)
-        {
-            
-            nextShootTime = Time.time + reloadTime;
-            shootState = ShootState.Reloading;
-            reloadAudioSource.Play();
-            _hand.SetActive(false);
-        } 
+        if (_PV.IsMine) {
+            // Checks that the gun is ready to be reloaded
+            if (shootState == ShootState.Ready)
+            {
+                
+                nextShootTime = Time.time + reloadTime;
+                shootState = ShootState.Reloading;
+                reloadAudioSource.Play();
+                _hand.SetActive(false);
+            } 
+        }
     }
 
     public void ReloadInstantly()
     {
-        Debug.Log("realod?!");
         // Checks that the gun is ready to be reloaded
         remainingAmmunition = ammunition;
         shootState = ShootState.Ready;
