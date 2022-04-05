@@ -31,6 +31,7 @@ public class RoundController : MonoBehaviour
     private string round_text = "";
 
     Gun gunController;
+    PlayerController playerController;
     public AudioSource whatMemeAudio;
     public GameObject[] playerGameObjects;
     private void Start()
@@ -38,6 +39,7 @@ public class RoundController : MonoBehaviour
         blueWins = 0;
         redWins = 0;
         gunController = FindObjectOfType<Gun>();
+        playerController = FindObjectOfType<PlayerController>();
         blueTeamHealthBar = GameObject.Find("HealthBarBlue");
         redTeamHealthBar = GameObject.Find("HealthBarRed");
         playerAmmo = GameObject.Find("Ammo");
@@ -114,6 +116,8 @@ public class RoundController : MonoBehaviour
         playerEnergy.SetActive(false);
         playerSmokeContainer.SetActive(false);
         gunController.ReloadInstantly();
+        playerController.ReloadEnergy();
+        playerController.ReloadSmokes();
         Time.timeScale = 0f;
     }
 

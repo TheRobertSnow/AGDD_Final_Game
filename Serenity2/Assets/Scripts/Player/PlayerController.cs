@@ -192,6 +192,15 @@ public class PlayerController : MonoBehaviour
         ++numberOfSmokes;
     }
 
+    public void ReloadSmokes()
+    {
+        numberOfSmokes = 2;
+    }
+    public void ReloadEnergy()
+    {
+        energy = 100f;
+    }
+
     //private void CheckBounds()
     //{
     //    Vector3 max1 = GameManager.Instance.MAXBOUNDS1;
