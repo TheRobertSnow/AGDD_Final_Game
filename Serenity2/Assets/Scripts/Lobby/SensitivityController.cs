@@ -22,8 +22,6 @@ public class SensitivityController : MonoBehaviour
             slider.value = 1.0f;
             sensitivityInput.text = "1";
         }
-        slider.minValue = 0.1f;
-        slider.maxValue = 10f;
     }
 
     void OnInputValueChanged()
