@@ -38,6 +38,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public GameObject joinBlueButton;
     public GameObject joinRedButton;
 
+    public List<Texture2D> playerModels;
+
     public ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
     {
         { "blueTeamCount", 0 },
@@ -260,8 +262,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
                 ExitGames.Client.Photon.Hashtable playerProperties = player.Value.CustomProperties;
                 playerProperties["ready"] = !(bool)playerProperties["ready"];
                 readyButton.GetComponentInChildren<TextMeshProUGUI>().text = !(bool)playerProperties["ready"] ? "Ready" : "Unready";
+                readyButton.GetComponent<Image>().color = !(bool)playerProperties["ready"] ? Color.green : Color.red;
                 player.Value.SetCustomProperties(playerProperties);
-                
             }
         }
     }
@@ -270,7 +272,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
-            if ((int)player.Value.CustomProperties["team"] != 2 && !(bool)player.Value.CustomProperties["ready"]) return false;
+            if (player.Value.CustomProperties.ContainsKey("team") && (int)player.Value.CustomProperties["team"] != 2 && !(bool)player.Value.CustomProperties["ready"]) return false;
         }
         return true;
     }
@@ -304,7 +306,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             playButton.GetComponent<Button>().interactable = false;
         }
 
-        if(PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 2)
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 2)
         {
             readyButton.GetComponent<Button>().interactable = false;
         }
@@ -313,7 +315,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             readyButton.GetComponent<Button>().interactable = true;
         }
 
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 1)
+        if ((PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 1) ||
+            (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (bool)PhotonNetwork.LocalPlayer.CustomProperties["ready"]))
         {
             joinRedButton.GetComponent<Button>().interactable = false;
         }
@@ -322,7 +325,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             joinRedButton.GetComponent<Button>().interactable = true;
         }
 
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 0)
+        if  ((PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 0) ||
+            (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (bool)PhotonNetwork.LocalPlayer.CustomProperties["ready"]))
         {
             joinBlueButton.GetComponent<Button>().interactable = false;
         }
