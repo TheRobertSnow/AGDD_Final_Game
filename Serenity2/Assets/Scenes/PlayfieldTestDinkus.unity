@@ -8637,6 +8637,9 @@ MonoBehaviour:
   blueScore_2: {fileID: 1442934613}
   redScore_2: {fileID: 1763749730}
   countDownText_2: {fileID: 1726091982}
+  blueTeamWinImg: {fileID: 21300000, guid: 9db30cc736425304eace1676a5125ad9, type: 3}
+  redTeamWinImg: {fileID: 21300000, guid: 8f20962492fda5a4aa82d0c68db76973, type: 3}
+  winImage: {fileID: 89492425}
   screenTime: 5
   endScreenTime: 10
   roundsToWin: 3

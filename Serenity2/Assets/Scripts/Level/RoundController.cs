@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class RoundController : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class RoundController : MonoBehaviour
     public TextMeshProUGUI blueScore_2;
     public TextMeshProUGUI redScore_2;
     public TextMeshProUGUI countDownText_2;
+    public Sprite blueTeamWinImg;
+    public Sprite redTeamWinImg;
+    public GameObject winImage;
     public int screenTime = 5;
     public int endScreenTime = 15;
     public int roundsToWin = 2;
@@ -60,11 +64,13 @@ public class RoundController : MonoBehaviour
         if (blueWins == roundsToWin) {
             round_text = "BLUE TEAM";
             PlayerPrefs.SetInt("gameWinner", 0);
+            winImage.GetComponent<Image>().sprite = blueTeamWinImg;
             StartCoroutine(WinnerCoroutine(endScreenTime));
         }
         else if (redWins == roundsToWin) {
             round_text = "RED TEAM";
             PlayerPrefs.SetInt("gameWinner", 1);
+            winImage.GetComponent<Image>().sprite = redTeamWinImg;
             StartCoroutine(WinnerCoroutine(endScreenTime));
         }
         else {
