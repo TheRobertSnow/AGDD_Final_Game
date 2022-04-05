@@ -39,11 +39,12 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public GameObject joinRedButton;
 
     public ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
-            {
-                { "blueTeamCount", 0 },
-                { "redTeamCount", 0 },
-                { "allPlayersReady", false}
-            };
+    {
+        { "blueTeamCount", 0 },
+        { "redTeamCount", 0 },
+        { "status", "waiting" },
+        { "allPlayersReady", false}
+    };
 
 
     private void Start() 
@@ -106,6 +107,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             RoomItem newRoom = Instantiate(roomItemPrefab, contentObject);
             newRoom.SetRoomName(room.Name);
             newRoom.SetPlayerCount(room.PlayerCount.ToString() + "/" + room.MaxPlayers.ToString());
+            newRoom.SetRoomStatus("waiting");
             roomItemsList.Add(newRoom);
         }
     }
@@ -161,10 +163,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             {
                 ExitGames.Client.Photon.Hashtable playerProperties = player.Value.CustomProperties;
                 playerProperties["team"] = 1;
+                playerProperties["spawnPoint"] = PhotonNetwork.CurrentRoom.CustomProperties["redTeamCount"];
                 player.Value.SetCustomProperties(playerProperties);
-
-                roomProperties["redTeamCount"] = (int)roomProperties["redTeamCount"] + 1;
-                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
                 return;
             }
         }
@@ -181,10 +181,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             {
                 ExitGames.Client.Photon.Hashtable playerProperties = player.Value.CustomProperties;
                 playerProperties["team"] = 0;
+                playerProperties["spawnPoint"] = PhotonNetwork.CurrentRoom.CustomProperties["blueTeamCount"];
                 player.Value.SetCustomProperties(playerProperties);
-
-                roomProperties["blueTeamCount"] = (int)roomProperties["blueTeamCount"] + 1;
-                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
                 return;
             }
         }
@@ -209,16 +207,18 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         {
             Destroy(item.gameObject);
         }
+        // Hard reset everything on update
         spectatorList.Clear();
         blueTeamList.Clear();
         redTeamList.Clear();
+        ExitGames.Client.Photon.Hashtable currentRoomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+        currentRoomProperties["redTeamCount"] = 0;
+        currentRoomProperties["blueTeamCount"] = 0;
 
+        // Iterate through every player in the room
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
-            Debug.Log(player.Value.NickName + player.Value.CustomProperties["team"]);
-            Debug.Log(roomProperties["redTeamCount"]);
-            Debug.Log(roomProperties["blueTeamCount"]);
-
+            // Spectator
             if ((int)player.Value.CustomProperties["team"] == 2)
             {
                 SpectatorItem spectator = spectatorPrefab;
@@ -226,21 +226,29 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
                 spectatorList.Add(spectator);
                 Instantiate(spectator, spectatorPanel);
             }
+            // Red team
             else if ((int)player.Value.CustomProperties["team"] == 1)
             {
+                currentRoomProperties["redTeamCount"] = (int)currentRoomProperties["redTeamCount"] + 1;
+
                 PlayerItem redTeamPlayer = playerItemPrefab;
                 redTeamPlayer.SetPlayerInfo(player.Value);
                 redTeamList.Add(redTeamPlayer);
                 Instantiate(redTeamPlayer, redTeamPanel);
+
             }
+            // Blue team
             else if ((int)player.Value.CustomProperties["team"] == 0)
             {
+                currentRoomProperties["blueTeamCount"] = (int)currentRoomProperties["blueTeamCount"] + 1;
+                
                 PlayerItem blueTeamPlayer = playerItemPrefab;
                 blueTeamPlayer.SetPlayerInfo(player.Value);
                 blueTeamList.Add(blueTeamPlayer);
                 Instantiate(blueTeamPlayer, blueTeamPanel);
             }
         }
+        PhotonNetwork.CurrentRoom.SetCustomProperties(currentRoomProperties);
     }
     
     public void OnClickPressReady()
@@ -283,18 +291,52 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1 && CheckAllPlayersReady())
+        if (PhotonNetwork.IsMasterClient && 
+            PhotonNetwork.CurrentRoom.PlayerCount >= 1 && 
+            CheckAllPlayersReady() && 
+            ((int)PhotonNetwork.CurrentRoom.CustomProperties["blueTeamCount"] >= 1 ||
+            (int)PhotonNetwork.CurrentRoom.CustomProperties["redTeamCount"] >= 1))
         {
-            playButton.SetActive(true);
+            playButton.GetComponent<Button>().interactable = true;
         }
         else
         {
-            playButton.SetActive(false);
+            playButton.GetComponent<Button>().interactable = false;
+        }
+
+        if(PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 2)
+        {
+            readyButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            readyButton.GetComponent<Button>().interactable = true;
+        }
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 1)
+        {
+            joinRedButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            joinRedButton.GetComponent<Button>().interactable = true;
+        }
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("team") && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 0)
+        {
+            joinBlueButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            joinBlueButton.GetComponent<Button>().interactable = true;
         }
     }
 
     public void OnClickPlayButton()
     {
+        ExitGames.Client.Photon.Hashtable currentRoomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+        currentRoomProperties["status"] = "started";
+        PhotonNetwork.CurrentRoom.SetCustomProperties(currentRoomProperties);
         PhotonNetwork.LoadLevel("PlayfieldTestDinkus");
     }
 }

@@ -483,3 +483,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 4205977100889441023}
   readyText: {fileID: 8809159743877081513}
+  spawnPoint: {fileID: 0}

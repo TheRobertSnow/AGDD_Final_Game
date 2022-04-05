@@ -18,11 +18,11 @@ public class SpawnPlayers : MonoBehaviour
         int playerTeam = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
         if (playerTeam == 0)
         {
-            spawnPoint = blueTeamSpawnPoints[0];
+            spawnPoint = blueTeamSpawnPoints[(int)PhotonNetwork.LocalPlayer.CustomProperties["spawnPoint"]];
         }
         else if (playerTeam == 1)
         {
-            spawnPoint = redTeamSpawnPoints[0];
+            spawnPoint = redTeamSpawnPoints[(int)PhotonNetwork.LocalPlayer.CustomProperties["spawnPoint"]];
         }
         else
         {

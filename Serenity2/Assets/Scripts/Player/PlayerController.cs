@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
             Destroy(_rb);
             SetName();
         }
-        playerName.gameObject.SetActive(false);
+        playerName.text = PhotonNetwork.LocalPlayer.NickName;
         _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
     }
 
