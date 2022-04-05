@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/ConnectToServer.unity
     guid: 4d09236974859f348945f7a104a06d3e
   - enabled: 1
-    path: Assets/Scenes/Lobbyconflict.unity
+    path: Assets/Scenes/Lobby.unity
     guid: 73d71b74ff5765a488827d3f8aeec7dc
   - enabled: 1
     path: Assets/Scenes/PlayfieldTestDinkus.unity

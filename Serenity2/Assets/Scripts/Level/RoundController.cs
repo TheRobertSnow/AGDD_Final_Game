@@ -33,11 +33,12 @@ public class RoundController : MonoBehaviour
     private int blueWins = 0;
     private int redWins = 0;
     private string round_text = "";
-
+    
     Gun gunController;
     PlayerController playerController;
     public AudioSource whatMemeAudio;
     public GameObject[] smokeGameObjects;
+    public SpawnPlayers spawnController;
     private void Start()
     {
         blueWins = 0;
@@ -125,6 +126,7 @@ public class RoundController : MonoBehaviour
         //gunController.ReloadInstantly();
         //playerController.ReloadEnergy();
         playerController.ReloadSmokes();
+        spawnController.NewRound();
         RemoveSmokes();
         Time.timeScale = 0f;
     }
