@@ -333,6 +333,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 702a7b4f8e767aa4fbc4bbae0152803c, type: 2}
   - {fileID: 2100000, guid: 540f9f5143f31af4388ed6ca6d5f8fa4, type: 2}
   - {fileID: 2100000, guid: 64cfe297ab91fd546b9d1b7cf5d4d377, type: 2}
+  - {fileID: 2100000, guid: 81dd34f7c9f8c0642809c5b094173e64, type: 2}
   playerModel: {fileID: 3993966362051744945}
 --- !u!1 &8835430156059513284
 GameObject:
@@ -400,7 +401,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d4d3c82641f476e4081053f30cb3be0e, type: 2}
-  - {fileID: 2100000, guid: 570865c38c555214586fdb3c50b4158a, type: 2}
+  - {fileID: 2100000, guid: 81dd34f7c9f8c0642809c5b094173e64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

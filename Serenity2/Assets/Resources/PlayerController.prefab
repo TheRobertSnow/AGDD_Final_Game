@@ -611,6 +611,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 702a7b4f8e767aa4fbc4bbae0152803c, type: 2}
   - {fileID: 2100000, guid: 540f9f5143f31af4388ed6ca6d5f8fa4, type: 2}
   - {fileID: 2100000, guid: 64cfe297ab91fd546b9d1b7cf5d4d377, type: 2}
+  - {fileID: 2100000, guid: 81dd34f7c9f8c0642809c5b094173e64, type: 2}
   playerModel: {fileID: 5870574482476064962}
 --- !u!114 &4835689242978647030
 MonoBehaviour:
