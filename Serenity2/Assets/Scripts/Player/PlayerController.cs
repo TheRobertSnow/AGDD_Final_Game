@@ -5,6 +5,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using Vector3 = UnityEngine.Vector3;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,23 +29,28 @@ public class PlayerController : MonoBehaviour
     private Image _energySliderImage;
     public bool gamePaused = false;
 
-    public Animator modelAnimator;
     Player player;
 
     private bool _playerBlownUp = false;
 
     private TMP_Text _grenadeText;
 
+    [Header("Player skins")]
+    public Material redTeamMaterial;
+    public Material blueTeamMaterial;
+    public Material spectatorMaterial;
+    public List<Material> playerSkins;
+    public MeshRenderer playerModel;
+
     private void Awake()
     {
         _view = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody>();
+        _energySlider = GameObject.Find("SliderYellow").GetComponent<Slider>();
+        _energySliderImage = _energySlider.GetComponentInChildren<Image>();
         if ((int)PhotonNetwork.LocalPlayer.CustomProperties["team"] != 2)
         {
-            _energySlider = GameObject.Find("SliderYellow").GetComponent<Slider>();
-            _energySliderImage = _energySlider.GetComponentInChildren<Image>();
             _grenadeText = GameObject.Find("SmokeCountText").GetComponent<TMP_Text>();
-            Debug.Log(_grenadeText);
         }
     }
 
@@ -63,6 +69,7 @@ public class PlayerController : MonoBehaviour
         {
             camera.gameObject.SetActive(true);
         }
+        UpdatePlayerModel();
         //Destroy(GetComponentInChildren<Camera>().gameObject);
 
 
@@ -79,7 +86,10 @@ public class PlayerController : MonoBehaviour
         if (!gamePaused) {
             Move();
             Jump();
-            throwSmoke();
+            if (_team != 2)
+            {
+                throwSmoke();
+            }   
         }
         //if (!_playerBlownUp)
         //{
@@ -108,32 +118,29 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateEnergy()
     {
-        if (_team != 2)
+        if (!isSprinting())
         {
-            if (!isSprinting())
+            if (energy < 5f)
             {
-                if (energy < 5f)
-                {
-                    // energy is restore slower if almost empty to stop spam
-                    energy = Math.Min(100f, energy + Time.fixedDeltaTime);
-                }
-                else
-                {
-                    energy = Math.Min(100f, energy + Time.fixedDeltaTime * 5f);
-                }
-                
+                // energy is restore slower if almost empty to stop spam
+                energy = Math.Min(100f, energy + Time.fixedDeltaTime);
             }
             else
             {
-                // deplete energy
-                energy = Math.Max(-5f, energy - Time.fixedDeltaTime * 20f);
+                energy = Math.Min(100f, energy + Time.fixedDeltaTime * 5f);
             }
-
-            _energySlider.value = Math.Max(0, energy);
-
-            _energySliderImage.color = energy < 10f ? new Color(161, 139, 50) : new Color(255, 218, 0);
-
+                
         }
+        else
+        {
+            // deplete energy
+            energy = Math.Max(-5f, energy - Time.fixedDeltaTime * 20f);
+        }
+
+        _energySlider.value = Math.Max(0, energy);
+
+        _energySliderImage.color = energy < 10f ? new Color(161, 139, 50) : new Color(255, 218, 0);
+        
     }
 
     private void Move()
@@ -143,12 +150,6 @@ public class PlayerController : MonoBehaviour
         _moveAmount = Vector3.SmoothDamp(
             _moveAmount,
             moveDir * (isSprinting() ? sprintSpeed : walkSpeed), ref _smoothMoveVelocity, smoothTime);
-
-        float velocityZ = Vector3.Dot(moveDir, transform.forward);
-        float velocityX = Vector3.Dot(moveDir, transform.right);
-
-        modelAnimator.SetFloat("VelocityZ", velocityZ , 0.1f, Time.deltaTime);
-        modelAnimator.SetFloat("VelocityX", velocityX , 0.1f, Time.deltaTime);
     }
 
     private void Jump()
@@ -212,6 +213,28 @@ public class PlayerController : MonoBehaviour
     public void ReloadEnergy()
     {
         energy = 100f;
+    }
+
+    void UpdatePlayerModel()
+    {
+        Material[] materials = new Material[2];
+        Array.Copy(playerModel.sharedMaterials, materials, playerModel.sharedMaterials.Length);
+        if ((int)_view.Owner.CustomProperties["team"] == 0)
+        {
+            materials[0] = blueTeamMaterial;
+            materials[1] = playerSkins[(int)_view.Owner.CustomProperties["skin"]];
+        }
+        else if ((int)_view.Owner.CustomProperties["team"] == 1)
+        {
+            materials[0] = redTeamMaterial;
+            materials[1] = playerSkins[(int)_view.Owner.CustomProperties["skin"]];
+        }
+        else if ((int)_view.Owner.CustomProperties["team"] == 2)
+        {
+            materials[0] = spectatorMaterial;
+            materials[1] = playerSkins[(int)_view.Owner.CustomProperties["skin"]];
+        }
+        playerModel.sharedMaterials = materials;
     }
 
     //private void CheckBounds()

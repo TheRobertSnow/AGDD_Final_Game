@@ -110,37 +110,41 @@ public class RoundController : MonoBehaviour
         Resume();
         gameFinished.SetActive(false);
         whatMemeAudio.Stop();
-        if (PhotonNetwork.IsMasterClient) {
-            PhotonNetwork.LoadLevel("Lobby");
-        }
+        PhotonNetwork.LoadLevel("Lobby"); 
     }
     void Pause()
     {
-        playerController.gamePaused = true;
-        blueTeamHealthBar.SetActive(false);
-        redTeamHealthBar.SetActive(false);
-        playerAmmo.SetActive(false);
-        playerCrosshair.SetActive(false);
-        playerEnergy.SetActive(false);
-        playerSmokeContainer.SetActive(false);
-        //gunController.ReloadInstantly();
-        //playerController.ReloadEnergy();
-        playerController.ReloadSmokes();
-        spawnController.NewRound();
-        RemoveSmokes();
-        Time.timeScale = 0f;
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["team"] != 2)
+        {
+            playerController.gamePaused = true;
+            blueTeamHealthBar.SetActive(false);
+            redTeamHealthBar.SetActive(false);
+            playerAmmo.SetActive(false);
+            playerCrosshair.SetActive(false);
+            playerEnergy.SetActive(false);
+            playerSmokeContainer.SetActive(false);
+            //gunController.ReloadInstantly();
+            //playerController.ReloadEnergy();
+            playerController.ReloadSmokes();
+            spawnController.NewRound();
+            RemoveSmokes();
+            Time.timeScale = 0f;
+        }
     }
 
     void Resume()
     {
-        blueTeamHealthBar.SetActive(true);
-        redTeamHealthBar.SetActive(true);
-        playerAmmo.SetActive(true);
-        playerCrosshair.SetActive(true);
-        playerEnergy.SetActive(true);
-        playerSmokeContainer.SetActive(true);
-        Time.timeScale = 1f;
-        playerController.gamePaused = false;
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["team"] != 2)
+        {
+            blueTeamHealthBar.SetActive(true);
+            redTeamHealthBar.SetActive(true);
+            playerAmmo.SetActive(true);
+            playerCrosshair.SetActive(true);
+            playerEnergy.SetActive(true);
+            playerSmokeContainer.SetActive(true);
+            Time.timeScale = 1f;
+            playerController.gamePaused = false;
+        }
     }
 
     void RemoveSmokes()

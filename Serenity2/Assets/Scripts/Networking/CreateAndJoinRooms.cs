@@ -38,7 +38,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public GameObject joinBlueButton;
     public GameObject joinRedButton;
 
-    public List<Texture2D> playerModels;
+    public Material redTeamMaterial;
+    public Material blueTeamMaterial;
+    public Material spectatorMaterial;
+    public List<Material> playerSkins;
+    public MeshRenderer playerModel;
 
     public ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
     {
@@ -152,7 +156,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
                 ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
                 {
                     ["team"] = 2,
-                    ["ready"] = false
+                    ["ready"] = false,
+                    ["skin"] = 0
                 };
                 player.Value.SetCustomProperties(playerProperties);
                 return;
@@ -283,10 +288,62 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         }
         return true;
     }
-    
+
+    public void OnClickSkinRight()
+    {
+        ExitGames.Client.Photon.Hashtable playerProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+        if ((int)playerProperties["skin"] + 1 >= playerSkins.ToArray().Length)
+        {
+            playerProperties["skin"] = 0;
+        }
+        else
+        {
+            playerProperties["skin"] = (int)playerProperties["skin"] + 1;
+        }
+        
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
+    }
+
+    public void OnClickSkinLeft()
+    {
+        ExitGames.Client.Photon.Hashtable playerProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+        if ((int)playerProperties["skin"] - 1  < 0)
+        {
+            playerProperties["skin"] = playerSkins.ToArray().Length - 1;
+        }
+        else
+        {
+            playerProperties["skin"] = (int)playerProperties["skin"] - 1;
+        }
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
+    }
+
+    void UpdatePlayerModel()
+    {
+        Material[] materials = new Material[2];
+        System.Array.Copy(playerModel.sharedMaterials, materials, playerModel.sharedMaterials.Length);
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 0)
+        {
+            materials[0] = blueTeamMaterial;
+            materials[1] = playerSkins[(int)PhotonNetwork.LocalPlayer.CustomProperties["skin"]];
+        }
+        else if ((int)PhotonNetwork.LocalPlayer.CustomProperties["team"] == 1)
+        {
+            materials[0] = redTeamMaterial;
+            materials[1] = playerSkins[(int)PhotonNetwork.LocalPlayer.CustomProperties["skin"]];
+        }
+        else
+        {
+            materials[0] = spectatorMaterial;
+            materials[1] = playerSkins[(int)PhotonNetwork.LocalPlayer.CustomProperties["skin"]];
+        }
+        playerModel.sharedMaterials = materials;
+    }
+
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable playerProperties)
     {
         UpdatePlayerList();
+        UpdatePlayerModel();
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
