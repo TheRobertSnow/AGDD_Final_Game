@@ -2105,7 +2105,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1375581146}
   m_HandleRect: {fileID: 1375581145}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5227,7 +5227,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0007998626}
+  m_AnchoredPosition: {x: 0, y: -0.000022745484}
   m_SizeDelta: {x: 0.0000019073486, y: 593.9}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1405154725
@@ -7555,6 +7555,11 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 0f94c52e86b00ca43a91979414f95f29, type: 2}
   - {fileID: 2100000, guid: 4044ae75270346b4b883f58ed2e6ccd3, type: 2}
   - {fileID: 2100000, guid: 133c9dd8153f0c44abda43e4c384a3e2, type: 2}
+  - {fileID: 2100000, guid: 447653d2770ec7c4dbbed77f60b388f6, type: 2}
+  - {fileID: 2100000, guid: 8b1fe85e45a8b1848a232122c506a0ca, type: 2}
+  - {fileID: 2100000, guid: 702a7b4f8e767aa4fbc4bbae0152803c, type: 2}
+  - {fileID: 2100000, guid: 540f9f5143f31af4388ed6ca6d5f8fa4, type: 2}
+  - {fileID: 2100000, guid: 64cfe297ab91fd546b9d1b7cf5d4d377, type: 2}
   playerModel: {fileID: 557816925}
 --- !u!4 &1750029115
 Transform:
