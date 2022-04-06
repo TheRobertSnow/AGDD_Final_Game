@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
 
     public void IncrementSmokeCount()
     {
-        ++numberOfSmokes;
+        numberOfSmokes += 3;
     }
 
     public void ReloadSmokes()

@@ -124,8 +124,8 @@ public class RoundController : MonoBehaviour
             playerEnergy.SetActive(false);
             playerSmokeContainer.SetActive(false);
             //gunController.ReloadInstantly();
-            //playerController.ReloadEnergy();
-            playerController.ReloadSmokes();
+            playerController.ReloadEnergy();
+            //playerController.ReloadSmokes();
             spawnController.NewRound();
             RemoveSmokes();
             Time.timeScale = 0f;
