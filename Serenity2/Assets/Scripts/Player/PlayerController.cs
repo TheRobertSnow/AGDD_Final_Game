@@ -46,12 +46,11 @@ public class PlayerController : MonoBehaviour
     {
         _view = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody>();
+        _energySlider = GameObject.Find("SliderYellow").GetComponent<Slider>();
+        _energySliderImage = _energySlider.GetComponentInChildren<Image>();
         if ((int)PhotonNetwork.LocalPlayer.CustomProperties["team"] != 2)
         {
-            _energySlider = GameObject.Find("SliderYellow").GetComponent<Slider>();
-            _energySliderImage = _energySlider.GetComponentInChildren<Image>();
             _grenadeText = GameObject.Find("SmokeCountText").GetComponent<TMP_Text>();
-            Debug.Log(_grenadeText);
         }
     }
 
@@ -119,32 +118,29 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateEnergy()
     {
-        if (_team != 2)
+        if (!isSprinting())
         {
-            if (!isSprinting())
+            if (energy < 5f)
             {
-                if (energy < 5f)
-                {
-                    // energy is restore slower if almost empty to stop spam
-                    energy = Math.Min(100f, energy + Time.fixedDeltaTime);
-                }
-                else
-                {
-                    energy = Math.Min(100f, energy + Time.fixedDeltaTime * 5f);
-                }
-                
+                // energy is restore slower if almost empty to stop spam
+                energy = Math.Min(100f, energy + Time.fixedDeltaTime);
             }
             else
             {
-                // deplete energy
-                energy = Math.Max(-5f, energy - Time.fixedDeltaTime * 20f);
+                energy = Math.Min(100f, energy + Time.fixedDeltaTime * 5f);
             }
-
-            _energySlider.value = Math.Max(0, energy);
-
-            _energySliderImage.color = energy < 10f ? new Color(161, 139, 50) : new Color(255, 218, 0);
-
+                
         }
+        else
+        {
+            // deplete energy
+            energy = Math.Max(-5f, energy - Time.fixedDeltaTime * 20f);
+        }
+
+        _energySlider.value = Math.Max(0, energy);
+
+        _energySliderImage.color = energy < 10f ? new Color(161, 139, 50) : new Color(255, 218, 0);
+        
     }
 
     private void Move()

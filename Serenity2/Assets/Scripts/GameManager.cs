@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviourPun
     private static GameManager _instance;
     
     private int _team;
-    private GameObject mainCanvas;
-    private GameObject playerCanvas;
+    private GameObject smokeContainer;
+    private GameObject ammo;
     public static GameManager Instance
     {
         get
@@ -51,10 +51,10 @@ public class GameManager : MonoBehaviourPun
         // Spectator hide stuff
         _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
         if (_team == 2) {
-            mainCanvas = GameObject.Find("MainCanvas");
-            playerCanvas = GameObject.Find("PlayerCanvas");
-            mainCanvas.SetActive(false);
-            playerCanvas.SetActive(false);
+            smokeContainer = GameObject.Find("SmokeContainer");
+            ammo = GameObject.Find("Ammo");
+            smokeContainer.SetActive(false);
+            ammo.SetActive(false);
         }
     }
 
