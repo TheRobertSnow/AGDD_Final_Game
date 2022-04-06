@@ -67,14 +67,16 @@ public class Gun : MonoBehaviour
         //muzzleOffset = GetComponent<Renderer>().bounds.extents.z;
         remainingAmmunition = ammunition;
         _hand = GameObject.Find("hand");
-        ammoText = GameObject.Find("Ammo").GetComponent<TextMeshProUGUI>();
-        Debug.Log(_hand);
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["team"] != 2)
+        {
+            ammoText = GameObject.Find("Ammo").GetComponent<TextMeshProUGUI>();
+        }
         _team = (int)PhotonNetwork.LocalPlayer.CustomProperties["team"];
     }
 
     void Update()
     {
-        if (_PV.IsMine)
+        if (_PV.IsMine && (int)PhotonNetwork.LocalPlayer.CustomProperties["team"] != 2)
         {
             ammoText.text = "Ammo:" + remainingAmmunition + "/" + ammunition;
         }
@@ -112,6 +114,11 @@ public class Gun : MonoBehaviour
         {
             _PV.RPC("StopFAnimation", RpcTarget.All);
         }
+    }
+    [PunRPC]
+    void PlayShootAnimation()
+    {
+        m_Animator.SetTrigger("Shoot");
     }
 
     [PunRPC]
@@ -162,7 +169,7 @@ public class Gun : MonoBehaviour
 
                     rb.velocity = (targetPoint - transform.position).normalized * roundSpeed;
                 }
-                m_Animator.SetTrigger("Shoot");
+                _PV.RPC("PlayShootAnimation", RpcTarget.All);
                 audioSource.Play();
                 remainingAmmunition--;
                 if (remainingAmmunition > 0)

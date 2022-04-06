@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviourPun
     public Vector3 MINBOUNDS1 = new Vector3(-62.5800018f, 1.5f, 40.0699997f);
     public Vector3 MINBOUNDS2 = new Vector3(-62.5800018f, 1.5f, -40.0699997f);
 
+
     private void Awake()
     {
         _instance = this;

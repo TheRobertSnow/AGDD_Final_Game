@@ -5,6 +5,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using Vector3 = UnityEngine.Vector3;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,12 +29,18 @@ public class PlayerController : MonoBehaviour
     private Image _energySliderImage;
     public bool gamePaused = false;
 
-    public Animator modelAnimator;
     Player player;
 
     private bool _playerBlownUp = false;
 
     private TMP_Text _grenadeText;
+
+    [Header("Player skins")]
+    public Material redTeamMaterial;
+    public Material blueTeamMaterial;
+    public Material spectatorMaterial;
+    public List<Material> playerSkins;
+    public MeshRenderer playerModel;
 
     private void Awake()
     {
@@ -63,6 +70,7 @@ public class PlayerController : MonoBehaviour
         {
             camera.gameObject.SetActive(true);
         }
+        UpdatePlayerModel();
         //Destroy(GetComponentInChildren<Camera>().gameObject);
 
 
@@ -79,7 +87,10 @@ public class PlayerController : MonoBehaviour
         if (!gamePaused) {
             Move();
             Jump();
-            throwSmoke();
+            if (_team != 2)
+            {
+                throwSmoke();
+            }   
         }
         //if (!_playerBlownUp)
         //{
@@ -143,12 +154,6 @@ public class PlayerController : MonoBehaviour
         _moveAmount = Vector3.SmoothDamp(
             _moveAmount,
             moveDir * (isSprinting() ? sprintSpeed : walkSpeed), ref _smoothMoveVelocity, smoothTime);
-
-        float velocityZ = Vector3.Dot(moveDir, transform.forward);
-        float velocityX = Vector3.Dot(moveDir, transform.right);
-
-        modelAnimator.SetFloat("VelocityZ", velocityZ , 0.1f, Time.deltaTime);
-        modelAnimator.SetFloat("VelocityX", velocityX , 0.1f, Time.deltaTime);
     }
 
     private void Jump()
@@ -212,6 +217,28 @@ public class PlayerController : MonoBehaviour
     public void ReloadEnergy()
     {
         energy = 100f;
+    }
+
+    void UpdatePlayerModel()
+    {
+        Material[] materials = new Material[2];
+        Array.Copy(playerModel.sharedMaterials, materials, playerModel.sharedMaterials.Length);
+        if ((int)_view.Owner.CustomProperties["team"] == 0)
+        {
+            materials[0] = blueTeamMaterial;
+            materials[1] = playerSkins[(int)_view.Owner.CustomProperties["skin"]];
+        }
+        else if ((int)_view.Owner.CustomProperties["team"] == 1)
+        {
+            materials[0] = redTeamMaterial;
+            materials[1] = playerSkins[(int)_view.Owner.CustomProperties["skin"]];
+        }
+        else if ((int)_view.Owner.CustomProperties["team"] == 2)
+        {
+            materials[0] = spectatorMaterial;
+            materials[1] = playerSkins[(int)_view.Owner.CustomProperties["skin"]];
+        }
+        playerModel.sharedMaterials = materials;
     }
 
     //private void CheckBounds()
