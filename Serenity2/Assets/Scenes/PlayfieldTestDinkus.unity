@@ -8838,7 +8838,7 @@ MonoBehaviour:
   winImage: {fileID: 89492425}
   screenTime: 6
   endScreenTime: 10
-  roundsToWin: 2
+  roundsToWin: 6
   whatMemeAudio: {fileID: 1253172228}
   smokeGameObjects: []
   spawnController: {fileID: 861968319}

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ready
+  m_text: Not ready
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190335
-  m_fontColor: {r: 0, g: 1, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -328,6 +328,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 0f94c52e86b00ca43a91979414f95f29, type: 2}
   - {fileID: 2100000, guid: 4044ae75270346b4b883f58ed2e6ccd3, type: 2}
   - {fileID: 2100000, guid: 133c9dd8153f0c44abda43e4c384a3e2, type: 2}
+  - {fileID: 2100000, guid: 447653d2770ec7c4dbbed77f60b388f6, type: 2}
+  - {fileID: 2100000, guid: 8b1fe85e45a8b1848a232122c506a0ca, type: 2}
+  - {fileID: 2100000, guid: 702a7b4f8e767aa4fbc4bbae0152803c, type: 2}
+  - {fileID: 2100000, guid: 540f9f5143f31af4388ed6ca6d5f8fa4, type: 2}
+  - {fileID: 2100000, guid: 64cfe297ab91fd546b9d1b7cf5d4d377, type: 2}
+  - {fileID: 2100000, guid: 81dd34f7c9f8c0642809c5b094173e64, type: 2}
   playerModel: {fileID: 3993966362051744945}
 --- !u!1 &8835430156059513284
 GameObject:
@@ -394,8 +400,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1e8915cda9983e94a859f9066f12381b, type: 2}
-  - {fileID: 2100000, guid: 0f94c52e86b00ca43a91979414f95f29, type: 2}
+  - {fileID: 2100000, guid: d4d3c82641f476e4081053f30cb3be0e, type: 2}
+  - {fileID: 2100000, guid: 81dd34f7c9f8c0642809c5b094173e64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

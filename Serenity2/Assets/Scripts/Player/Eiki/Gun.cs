@@ -97,7 +97,6 @@ public class Gun : MonoBehaviour
                 if (Time.time > nextShootTime)
                 {
                     int ammoBeforeReload = ammunition;
-                    //if (ammoBeforeReload == 0) ammoBeforeReload = 1;
                     ammunition = Math.Max(0, ammunition - 12);
                     remainingAmmunition = Math.Min(ammoBeforeReload, 12);
                     shootState = ShootState.Ready;
@@ -136,7 +135,7 @@ public class Gun : MonoBehaviour
     /// Attempts to fire the gun
     public void Shoot()
     {
-        if (_PV.IsMine) {
+        if (_PV.IsMine && remainingAmmunition > 0) {
             // Checks that the gun is ready to shoot
             if (shootState == ShootState.Ready && _team != 2 && remainingAmmunition != 0)
             {
@@ -192,7 +191,6 @@ public class Gun : MonoBehaviour
             // Checks that the gun is ready to be reloaded
             if (shootState == ShootState.Ready)
             {
-                
                 nextShootTime = Time.time + reloadTime;
                 shootState = ShootState.Reloading;
                 reloadAudioSource.Play();
